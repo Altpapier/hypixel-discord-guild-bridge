@@ -64,16 +64,18 @@ module.exports = {
         }
 
         async function react(messageSent, reaction) {
-            if (
-                (config.options.messageSentConfirmation.checkmarkReactions && reaction === '✅') ||
-                (config.options.messageSentConfirmation.failedReactions && reaction === '⛔')
-            ) {
+            if (config.options.messageSentConfirmation.checkmarkReactions || config.options.messageSentConfirmation.failedReactions) {
                 let message = messagesReactionCache.get(messageSent);
                 if (!messageSent) {
                     message = Array.from(messagesReactionCache)?.[(messagesReactionCache?.size || 0) - 1]?.[1];
                 }
                 if (message) {
-                    message.react(reaction);
+                    if (
+                        (config.options.messageSentConfirmation.checkmarkReactions && reaction === '✅') ||
+                        (config.options.messageSentConfirmation.failedReactions && reaction === '⛔')
+                    ) {
+                        message.react(reaction);
+                    }
                     messagesReactionCache.delete(messageSent);
                 }
             }
