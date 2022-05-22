@@ -100,9 +100,10 @@ The included API can be used to send post requests to execute commands or send m
 
 ### Requirements:
 
--  Git
--  Note.js >= `16`
--  Minecraft Account
+-   Git
+-   Note.js >= `16`
+-   Minecraft Account
+-   Discord Bot (Token)
 
 ### Setup:
 
@@ -139,7 +140,7 @@ For this you will first need to enter your Minecraft login data into the `userna
 ```
 
 _Discord Bot Token_:
-For this bot to work you will need to have a Discord bot and a Hypixel API key. If you do not have a Discord bot token to use for this, you will need to create a new one. To create a Discord bot and get the bot token, go to [https://discord.dev/](https://discord.dev/) and click on `Applications`. Then click on `New Application` and give the application a name and then press `Create`. After that click on `Bot` on the left side of the screen. To create the bot, you will now need to click on `Add Bot` and then `Yes, do it!`. To obtain the bot token click on `Reset Token` and `Yes, do it!` and enter your 2FA code if needed. You can now press `Copy` and paste the token into the `discordBotToken` field of the configuration file.
+For this bot to work you will need to have a Discord bot and a Hypixel API key. If you do not have a Discord bot token to use for this, you will need to create a new one. To create a Discord bot and get the bot token, go to [https://discord.dev/](https://discord.dev/) and click on `Applications`. Then click on `New Application` and give the application a name and then press `Create`. After that click on `Bot` on the left side of the screen. To create the bot, you will now need to click on `Add Bot` and then `Yes, do it!`. To obtain the bot token click on `Reset Token` and `Yes, do it!` and enter your 2FA code if needed. You can now press `Copy` and paste the token into the `discordBotToken` field of the configuration file. Make sure to also invite the bot to your server. This can be done by clicking on `OAuth2` and then on `URL Generator`. From the scopes you will need to choose the `bot` and `applications.commands` scope. After you did that you can choose the bots permissions. If you are lazy you can just choose the `Administrator` option. Finally, you can click `Copy` on the `Generated URL` and choose the server the bot should be in.
 
 _Hypixel API Key_:
 If you currently do not know your Hypixel API key, you will need to generate yourself a new one. To do so, join Hypixel and execute the `/api new` command. This will now show your newly generated API key that you can paste into the `hypixelApiKey` field of the configuration file.
