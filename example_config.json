@@ -1,0 +1,103 @@
+{
+    "minecraft": {
+        "username": "",
+        "password": "",
+        "microsoftAuth": true,
+        "ingameName": ""
+    },
+    "keys": {
+        "discordBotToken": "",
+        "hypixelApiKey": "",
+        "imgurClientId": ""
+    },
+    "channels": {
+        "guildIngameChat": "",
+        "officerIngameChat": "",
+        "ingameChatLog": "",
+        "log": "",
+        "logOptions": {
+            "hypixelLogin": true,
+            "hypixelDisconnect": true,
+            "hypixelKicked": true,
+            "logIngameUseImage": true,
+            "ingameChatLogFilter": ["EASTER EGG NEARBY!", "BUSY", "AWAY", "APPEARING OFFLINE"]
+        }
+    },
+    "discordServer": "",
+    "ingameChatEvents": {
+        "guildJoin": true,
+        "guildLeave": true,
+        "guildKick": true,
+        "guildMute": true,
+        "guildUnmute": true,
+        "guildPromote": true,
+        "guildDemote": true,
+        "guildDescription": true,
+        "guildAddedGame": true,
+        "guildVisibilitySetting": true,
+        "guildLevelUp": true,
+        "guildChatThrottle": true,
+        "guildQuest": true,
+        "guildRankGift": true,
+        "guildPlayerLeave": false,
+        "guildPlayerJoin": false
+    },
+    "options": {
+        "ingameChatConsoleLog": true,
+        "discordUseSlowCommand": true,
+        "messageSentConfirmation": true
+    },
+    "ingameCommands": {
+        "paste": true,
+        "render": true,
+        "skills": true,
+        "weight": true
+    },
+    "gexpManagment": {
+        "weeklyGEXPRequirement": 50000
+    },
+    "slashCommandsSet": false,
+    "api": {
+        "enabled": false,
+        "port": 3000,
+        "keys": {},
+        "routes": {
+            "chat": true,
+            "mute": false,
+            "unmute": false,
+            "kick": false,
+            "invite": false,
+            "setrank": false
+        }
+    },
+    "guildRequirement": {
+        "enabled": false,
+        "autoAccept": false,
+        "requirements": {
+            "senitherWeight": 0,
+            "lilyWeight": 0,
+            "hypixelLevel": 0,
+            "skillAverage": 0,
+            "catacombs": 0,
+            "slayer": {
+                "revenant": 0,
+                "tarantula": 0,
+                "wolf": 0,
+                "enderman": 0,
+                "blaze": 0
+            }
+        }
+    },
+    "guildWelcome": {
+        "enabled": true,
+        "message": "Welcome to the guild {USERNAME}!"
+    },
+    "fragBot": {
+        "enabled": false,
+        "addedToQueueMessage": "You have been added to the queue. Estimated queue time: {WAIT_TIME} seconds",
+        "partyWelcomeMessage": "Hello! You can join a dungeon now. I will automatically leave after 5 seconds.",
+        "whitelistGuildMembers": true,
+        "whitelistEnabled": true,
+        "whitelist": ["MattTheCuber", "Musicord", "Altpapier"]
+    }
+}

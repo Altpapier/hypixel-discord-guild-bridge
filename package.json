@@ -1,0 +1,23 @@
+{
+    "name": "hypixel-discord-guild-bridge",
+    "version": "1.0.0",
+    "description": "A guild bridge between Hypixel and Discord",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Altpapier",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.26.1",
+        "canvas": "^2.9.1",
+        "cors": "^2.8.5",
+        "cron": "^1.8.2",
+        "discord.js": "^13.6.0",
+        "express": "^4.17.3",
+        "imgur-anonymous-uploader": "^1.1.4",
+        "lilyweight": "^2.6.2",
+        "mineflayer": "^4.2.0",
+        "sourcebin": "^4.3.5"
+    }
+}
