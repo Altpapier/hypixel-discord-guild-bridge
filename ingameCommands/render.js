@@ -1,13 +1,14 @@
 const config = require('../config.json');
 const { getPlayer, decodeData } = require('../helper/functions.js');
-const imgur = require('imgur-anonymous-uploader');
 const { renderLore } = require('../helper/loreRenderer');
-const uploader = new imgur(config.keys.imgurClientId);
+const imgur = require('imgur-anonymous-uploader');
 
 module.exports = {
     name: 'render',
     execute: async (minecraftClient, discordClient, message, messageAuthor) => {
-        if (config.ingameCommands.render) {
+        if (config.ingameCommands.render && config.keys.imgurClientId) {
+            const uploader = new imgur(config.keys.imgurClientId);
+
             let { 1: username, 2: profile, 3: itemNumber } = message.split(' ');
 
             if (!username) username = messageAuthor;
