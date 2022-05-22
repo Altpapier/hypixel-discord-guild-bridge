@@ -45,7 +45,10 @@
     "options": {
         "ingameChatConsoleLog": true,
         "discordUseSlowCommand": true,
-        "messageSentConfirmation": true
+        "messageSentConfirmation": {
+            "checkmarkReactions": true,
+            "failedReactions": true
+        }
     },
     "ingameCommands": {
         "paste": true,
