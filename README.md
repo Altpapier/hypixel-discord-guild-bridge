@@ -15,7 +15,9 @@ If you have any suggestions or bugs you find using this bot, make sure to submit
 ### Guild Ingame Chat & Officer Ingame Chat
 
 Colored Minecraft Chat in Discord using images. This will also send guild events when a new guild member joins for example. The bot will send links in the channel as well.
-![description](https://imgur.com/MQXUVEx.png)![description](https://imgur.com/cvGiK5q.png)
+
+![description](https://imgur.com/MQXUVEx.png)
+![description](https://imgur.com/cvGiK5q.png)
 
 ### Reply to Messages
 
@@ -25,27 +27,32 @@ Colored Minecraft Chat in Discord using images. This will also send guild events
 ### Message Sent Reactions
 
 Know if a message was successfully sent into the guild chat or not
+
 ![description](https://imgur.com/HUnTMrn.png)
 
 ### Account Linking
 
 Link your Minecraft account to the Discord bot using the `/link` slash command for your guild rank to be displayed when sending messages in the guild in game chat Discord channel
+
 ![description](https://imgur.com/AmhJIfQ.png)
 
 ### Log Channel
 
 Logs every message the bot receives
+
 ![description](https://imgur.com/6KWFsfS.png)
 
 ### Guild EXP Managment
 
 Get a list of every guild member that does not meet the guild experience requirement. If a guild member is provided in the `player` argument, you can view the players past weeks guild experience even if they are not in the guild anymore and more!
-![guildexp](https://imgur.com/s8TOU3L.png)![description](https://imgur.com/H51DkH8.png)
+
+![description](https://imgur.com/s8TOU3L.png)![description](https://imgur.com/H51DkH8.png)
 
 ### Guild Requirement Manager
 
 Send a message into officer in game and discord chat if a player who requested to join the guild meets the configured requirements! Also supports auto accept if the player does meet the requirement. Players can check if they meet the requirements using the `/requirements` command in Discord
-![link](https://imgur.com/MT9rqqs.png)
+
+![description](https://imgur.com/MT9rqqs.png)
 
 ### Auto Welcome
 
@@ -54,7 +61,8 @@ The bot can also automatically welcome new members to the guild. This message ca
 ### Frag Bot (Use at your own risk!)
 
 The bot also includes an integrated frag bot that can be used by the guild. The bot supports an option to automatically whitelist all guild members.
-![link](https://imgur.com/yQN2QBO.png)
+
+![description](https://imgur.com/yQN2QBO.png)
 
 ### Ingame Commands
 
@@ -92,9 +100,9 @@ The included API can be used to send post requests to execute commands or send m
 
 ### Requirements:
 
-Git
-Note.js >= `16`
-Minecraft Account
+-  Git
+-  Note.js >= `16`
+-  Minecraft Account
 
 ### Setup:
 
