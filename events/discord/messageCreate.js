@@ -51,7 +51,7 @@ module.exports = {
                     await toDelete.delete();
                 }, 5000);
             }
-            if (config.options.messageSentConfirmation) {
+            if (config.options.messageSentConfirmation.failedReactions) {
                 messagesReactionCache.set(msg.substring(4), message);
                 setTimeout(() => {
                     if (messagesReactionCache.get(msg.substring(4))) {
@@ -64,7 +64,10 @@ module.exports = {
         }
 
         async function react(messageSent, reaction) {
-            if (config.options.messageSentConfirmation) {
+            if (
+                (config.options.messageSentConfirmation.checkmarkReactions && reaction === '✅') ||
+                (config.options.messageSentConfirmation.failedReactions && reaction === '⛔')
+            ) {
                 let message = messagesReactionCache.get(messageSent);
                 if (!messageSent) {
                     message = Array.from(messagesReactionCache)?.[(messagesReactionCache?.size || 0) - 1]?.[1];
