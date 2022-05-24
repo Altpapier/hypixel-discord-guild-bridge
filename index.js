@@ -18,26 +18,27 @@ const minecraftLoginOptions = {
 
 if (!config.minecraft.doNotUsePassword) minecraftLoginOptions.password = config.minecraft.password;
 
-let minecraftClient = mineflayer.createBot(minecraftLoginOptions);
+global.minecraftClient = mineflayer.createBot(minecraftLoginOptions);
+
 startMinecraftBot(minecraftClient, discordClient);
 async function startMinecraftBot(minecraftClient, discordClient) {
-    require('./handlers/minecraftEvents')(minecraftClient, discordClient);
-
     minecraftClient.on('end', async () => {
         if (config.channels.logOptions.hypixelDisconnect) {
             await discordClient.channels.cache
                 .get(config.channels.log)
                 ?.send(`${config.minecraft.ingameName + ' has' || 'I have'} been disconnected from Hypixel. Trying to reconnect...`);
-
-            minecraftClient = mineflayer.createBot(minecraftLoginOptions);
-            startMinecraftBot(minecraftClient, discordClient);
         }
+        global.minecraftClient = mineflayer.createBot(minecraftLoginOptions);
+        startMinecraftBot(minecraftClient, discordClient);
     });
+
+    require('./handlers/minecraftEvents')(discordClient);
+    require('./handlers/minecraftCommands')(discordClient);
 }
-require('./handlers/discordEvents')(minecraftClient, discordClient);
-require('./handlers/discordCommands')(minecraftClient, discordClient);
-require('./handlers/minecraftCommands')(minecraftClient, discordClient);
-require('./handlers/api')(minecraftClient);
+
+require('./handlers/discordEvents')(discordClient);
+require('./handlers/discordCommands')(discordClient);
+require('./handlers/api')();
 
 process.on('uncaughtException', console.error);
 process.on('unhandledRejection', console.error);

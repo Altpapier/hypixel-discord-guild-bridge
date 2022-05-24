@@ -3,7 +3,7 @@ const sourcebin = require('sourcebin');
 
 module.exports = {
     name: 'paste',
-    execute: async (minecraftClient, discordClient, message, messageAuthor) => {
+    execute: async (discordClient, message, messageAuthor) => {
         if (config.ingameCommands.paste) {
             const paste = message.split(' ').slice(1).join(' ');
             if (paste.length < 1) return minecraftClient.chat(`/gc @${messageAuthor} You must provide a paste to paste.`);

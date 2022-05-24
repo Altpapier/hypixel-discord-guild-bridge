@@ -3,7 +3,7 @@ const config = require('../../config.json');
 
 let emittedEvent = false;
 module.exports = {
-    async execute(minecraftClient, discordClient) {
+    async execute(discordClient) {
         if (!emittedEvent) {
             config.minecraft.ingameName = minecraftClient._client.session.selectedProfile.name;
             fs.writeFileSync('./config.json', JSON.stringify(config, null, 2));

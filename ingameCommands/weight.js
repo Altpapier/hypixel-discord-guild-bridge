@@ -4,7 +4,7 @@ const { getSenitherWeight, getLilyWeight } = require('../helper/weight.js');
 
 module.exports = {
     name: 'weight',
-    execute: async (minecraftClient, discordClient, message, messageAuthor) => {
+    execute: async (discordClient, message, messageAuthor) => {
         if (config.ingameCommands.weight) {
             let { 1: username, 2: profile } = message.split(' ');
 

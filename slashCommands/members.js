@@ -6,7 +6,7 @@ module.exports = {
     name: 'members',
     description: 'Check the members of the bots guild',
     options: [],
-    async execute(minecraftClient, discordClient, interaction) {
+    async execute(discordClient, interaction) {
         const gexpData = JSON.parse(fs.readFileSync('./data/guildGexp.json'));
 
         const ranks = {};

@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-module.exports = (minecraftClient, discordClient) => {
-    minecraftClient.commands = new Map();
+module.exports = () => {
+    global.minecraftClient.commands = new Map();
 
     const commandFiles = fs.readdirSync('./ingameCommands/');
     for (const file of commandFiles) {

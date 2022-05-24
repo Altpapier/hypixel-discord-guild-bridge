@@ -7,7 +7,7 @@ module.exports = {
     name: 'online',
     description: 'Check the online members of the bots guild',
     options: [],
-    async execute(minecraftClient, discordClient, interaction) {
+    async execute(discordClient, interaction) {
         if (minecraftClient?.player) {
             await minecraftClient.chat('/g online');
 

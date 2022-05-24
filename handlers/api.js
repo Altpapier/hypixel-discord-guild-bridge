@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 app.use(require('cors')());
 
-module.exports = async (minecraftClient) => {
+module.exports = async () => {
     if (config.api.enabled) {
         const auth = async (req, res, next) => {
             const endpoint = req.path.split('/')[1];

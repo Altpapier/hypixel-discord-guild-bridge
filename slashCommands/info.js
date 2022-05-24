@@ -6,7 +6,7 @@ module.exports = {
     name: 'info',
     description: 'Check the info of the bots guild',
     options: [],
-    async execute(minecraftClient, discordClient, interaction) {
+    async execute(discordClient, interaction) {
         const botUUID = minecraftClient.player.uuid;
         const guild = (await hypixelRequest(`https://api.hypixel.net/guild?player=${botUUID}`, true))?.guild;
         if (!guild) {

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { Collection } = require('discord.js');
 
-module.exports = (minecraftClient, discordClient) => {
+module.exports = (discordClient) => {
     discordClient.commands = new Collection();
 
     const commandFiles = fs.readdirSync('./slashCommands/');

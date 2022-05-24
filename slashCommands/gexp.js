@@ -15,7 +15,7 @@ module.exports = {
             required: false,
         },
     ],
-    async execute(minecraftClient, discordClient, interaction) {
+    async execute(discordClient, interaction) {
         const playerInput = interaction.options.get('player')?.value;
         const gexpData = JSON.parse(fs.readFileSync('./data/guildGexp.json').toString());
         const lowerToNormal = {};

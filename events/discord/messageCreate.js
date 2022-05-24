@@ -4,7 +4,7 @@ const messagesReactionCache = new Map();
 const fs = require('fs');
 
 module.exports = {
-    execute: async (minecraftClient, discordClient, message) => {
+    execute: async (discordClient, message) => {
         if (message.author.bot || message.content === '') return;
 
         if (message.content.startsWith('\\')) {

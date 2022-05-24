@@ -15,7 +15,7 @@ module.exports = {
             required: true,
         },
     ],
-    async execute(minecraftClient, discordClient, interaction) {
+    async execute(discordClient, interaction) {
         const playerData = await getGuildMemberData(interaction.options.get('player')?.value).catch((err) => {
             return interaction.editReply({
                 embeds: [errorEmbed(null, err.message)],

@@ -5,7 +5,7 @@ const imgur = require('imgur-anonymous-uploader');
 
 module.exports = {
     name: 'render',
-    execute: async (minecraftClient, discordClient, message, messageAuthor) => {
+    execute: async (discordClient, message, messageAuthor) => {
         if (config.ingameCommands.render && config.keys.imgurClientId) {
             const uploader = new imgur(config.keys.imgurClientId);
 
@@ -20,8 +20,6 @@ module.exports = {
                 itemNumber = username;
                 username = messageAuthor;
             }
-
-            console.log(username, profile, itemNumber);
 
             if (itemNumber < 1 || itemNumber > 9 || !itemNumber)
                 return minecraftClient.chat(`/gc @${messageAuthor} Invalid item number. Must be between 1 and 9.`);
@@ -42,7 +40,6 @@ module.exports = {
 
             const inventoryData = (await decodeData(Buffer.from(inventory, 'base64'))).i;
             const selectedItem = inventoryData[itemNumber - 1];
-            console.log(selectedItem);
             if (!selectedItem || !Object.keys(selectedItem || {}).length) {
                 return minecraftClient.chat(`/gc @${messageAuthor} This player does not have an item in slot ${itemNumber}.`);
             }

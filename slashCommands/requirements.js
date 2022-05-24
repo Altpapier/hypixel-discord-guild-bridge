@@ -20,7 +20,7 @@ module.exports = {
             required: true,
         },
     ],
-    async execute(minecraftClient, discordClient, interaction) {
+    async execute(discordClient, interaction) {
         const player = interaction.options.get('player')?.value;
 
         const uuid = await nameToUUID(player);

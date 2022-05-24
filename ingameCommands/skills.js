@@ -4,7 +4,7 @@ const { getSkillAverage } = require('../helper/skills');
 
 module.exports = {
     name: 'skills',
-    execute: async (minecraftClient, discordClient, message, messageAuthor) => {
+    execute: async (discordClient, message, messageAuthor) => {
         if (config.ingameCommands.skills) {
             let { 1: username, 2: profile } = message.split(' ');
 

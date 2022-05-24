@@ -41,7 +41,7 @@ function getLatestMessages() {
 
 module.exports = {
     getLatestMessages,
-    async execute(minecraftClient, discordClient, message) {
+    async execute(discordClient, message) {
         const msgString = message.toString();
         const msgStringColor = message.toMotd();
         // LIMBO CHECK
@@ -82,11 +82,12 @@ module.exports = {
             const sentMsg = msgString.substring(index + 2);
             const messageAuthor = splitMessage[2]?.includes('[') ? splitMessage[3]?.replace(':', '') : splitMessage[2]?.replace(':', '');
 
+            // INGAME COMMANDS
             if (sentMsg.trim().startsWith('!')) {
                 const cmd = sentMsg.trim().split(' ')[0].substring(1);
-                const command = minecraftClient.commands.get(cmd);
+                const command = minecraftClient?.commands?.get(cmd);
                 if (command) {
-                    command.execute(minecraftClient, discordClient, sentMsg, messageAuthor);
+                    command.execute(discordClient, sentMsg, messageAuthor);
                 }
             }
 
