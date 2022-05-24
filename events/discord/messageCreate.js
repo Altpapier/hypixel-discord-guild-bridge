@@ -43,6 +43,7 @@ module.exports = {
             }
 
             message.content = await formatMentions(discordClient, message.content);
+            message.content = message.content.replace(/\n/g, '');
             const msg = (messagePrefix + message.content).substring(0, 256);
 
             if ((messagePrefix + message.content).length >= 256) {
