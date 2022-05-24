@@ -17,6 +17,9 @@ module.exports = {
 
             const skills = getSkillAverage(playerProfile, 2);
 
+            if (skills == 0) {
+                return minecraftClient.chat(`/gc @${messageAuthor}${messageAuthor === username ? "'s" : ` ${username}'s`} skills API is disabled.`);
+            }
             minecraftClient.chat(`/gc @${messageAuthor}${messageAuthor === username ? "'s" : ` ${username}'s`} skill average is ${skills}.`);
         }
     },
