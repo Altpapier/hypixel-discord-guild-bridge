@@ -29,7 +29,7 @@ module.exports = {
                 if (!playerData) return interaction.editReply({ content: 'Guild Member not found.' });
 
                 const embeds = [];
-                const pages = Number(toFixed((playerData.gexpHistory.length || 0) / 20)) + ((playerData.gexpHistory.length || 0) == 0 ? 0 : 1);
+                const pages = Number(toFixed((playerData.gexpHistory.length || 0) / 20)) + (((playerData.gexpHistory.length || 1) % 20) == 0 ? 0 : 1);
                 for (let i = 0; i < pages; i++) {
                     const embed = new MessageEmbed()
                         .setTitle(`${lowerToNormal[playerInput.toLowerCase()]}'s Guild Exp`)
