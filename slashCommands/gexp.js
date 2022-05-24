@@ -17,7 +17,7 @@ module.exports = {
     ],
     async execute(discordClient, interaction) {
         const playerInput = interaction.options.get('player')?.value;
-        const gexpData = (JSON.parse(fs.readFileSync('./data/guildGexp.json').toString())).filter((g) => g.isInGuild);
+        const gexpData = JSON.parse(fs.readFileSync('./data/guildGexp.json').toString());
         const lowerToNormal = {};
         for (const player of Object.keys(gexpData)) {
             lowerToNormal[player.toLowerCase()] = player;
@@ -70,6 +70,7 @@ module.exports = {
 
                             **Members under the requirement**:
                             ${Object.keys(gexpData)
+                                .filter((player) => gexpData[player].isInGuild)
                                 .filter((player) => gexpData[player].gexpWeek < config.gexpManagment.weeklyGEXPRequirement)
                                 .sort((a, b) => gexpData[a].gexpWeek - gexpData[b].gexpWeek)
                                 .map((player) => {
@@ -79,6 +80,7 @@ module.exports = {
 
                             **Members above the requirement**:
                             ${Object.keys(gexpData)
+                                .filter((player) => gexpData[player].isInGuild)
                                 .filter((player) => gexpData[player].gexpWeek >= config.gexpManagment.weeklyGEXPRequirement)
                                 .sort((a, b) => gexpData[a].gexpWeek - gexpData[b].gexpWeek)
                                 .map((player) => {
@@ -89,6 +91,7 @@ module.exports = {
                             : n(`
                                 **Members**:
                                 ${Object.keys(gexpData)
+                                    .filter((player) => gexpData[player].isInGuild)
                                     .sort((a, b) => gexpData[b].gexpWeek - gexpData[a].gexpWeek)
                                     .map((player) => {
                                         return `**${player}**: \`${addCommas(gexpData[player].gexpWeek)}\``;
