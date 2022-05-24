@@ -17,7 +17,7 @@ module.exports = {
     ],
     async execute(discordClient, interaction) {
         const playerInput = interaction.options.get('player')?.value;
-        const gexpData = JSON.parse(fs.readFileSync('./data/guildGexp.json').toString());
+        const gexpData = JSON.parse(fs.readFileSync('./data/guildGexp.json').toString()).filter((g) => g.isInGuild);
         const lowerToNormal = {};
         for (const player of Object.keys(gexpData)) {
             lowerToNormal[player.toLowerCase()] = player;
