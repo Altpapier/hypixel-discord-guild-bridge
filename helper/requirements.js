@@ -58,8 +58,24 @@ async function getRequirements(uuid) {
 
     if (config.guildRequirement?.requirements?.hypixelLevel) {
         const playerRes = await hypixelRequest(`https://api.hypixel.net/player?uuid=${uuid}`, true);
-        if (playerRes) {
+        if (playerRes?.player) {
             result.hypixelLevel = hypixelLevel(playerRes.player.networkExp || 0);
+
+            const achievements = playerRes.player.achievements;
+            const skills = [
+                achievements?.skyblock_harvester || 0,
+                achievements?.skyblock_excavator || 0,
+                achievements?.skyblock_combat || 0,
+                achievements?.skyblock_gatherer || 0,
+                achievements?.skyblock_angler || 0,
+                achievements?.skyblock_augmentation || 0,
+                achievements?.skyblock_concoctor || 0,
+                achievements?.skyblock_domesticator || 0,
+            ];
+            const skillAverage = skills.reduce((a, b) => a + b, 0) / skills.length;
+            if (result.skillAverage < skillAverage) {
+                result.skillAverage = skillAverage;
+            }
         } else {
             result.hypixelLevel = null;
         }
