@@ -115,7 +115,7 @@ module.exports = {
                     });
 
                     if (includedURLs.length > 0) {
-                        await bridgeChannel.send(includedURLs.join('\n'));
+                        await bridgeChannel.send({ content: includedURLs.join('\n'), allowedMentions: { parse: [] } });
                     }
                 }
             } else {
@@ -127,7 +127,7 @@ module.exports = {
                         });
 
                         if (includedURLs.length > 0) {
-                            await officerChannel.send(includedURLs.join('\n'));
+                            await officerChannel.send({ content: includedURLs.join('\n'), allowedMentions: { parse: [] } });
                         }
                     }
                 }

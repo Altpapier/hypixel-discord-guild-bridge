@@ -26,6 +26,7 @@ async function execute(discordClient) {
     }
 
     async function sendDiscordMessage({ channelId, messageObject }) {
+        messageObject.allowedMentions = { parse: [] };
         const channel = discordClient.channels.cache.get(channelId);
         if (channel) {
             await channel.send(messageObject);
@@ -89,7 +90,7 @@ async function execute(discordClient) {
                 }
                 fs.writeFileSync('./data/guildMembers.json', JSON.stringify(guildMemberNames));
                 fs.writeFileSync('./data/guildRanks.json', JSON.stringify(guildMemberRanks));
-                fs.writeFileSync('./data/guildGexp.json', JSON.stringify(guildGEXPData));
+                //fs.writeFileSync('./data/guildGexp.json', JSON.stringify(guildGEXPData));
             }
         }
     }
