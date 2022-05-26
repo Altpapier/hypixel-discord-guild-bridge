@@ -45,6 +45,7 @@
     "options": {
         "ingameChatConsoleLog": true,
         "discordUseSlowCommand": true,
+        "discordDefaultSlow": 0,
         "messageSentConfirmation": {
             "checkmarkReactions": true,
             "failedReactions": true

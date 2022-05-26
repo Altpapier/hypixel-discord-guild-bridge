@@ -150,7 +150,7 @@ module.exports = {
                     if (msgString.includes('enabled')) {
                         await bridgeChannel.setRateLimitPerUser(10);
                     } else {
-                        await bridgeChannel.setRateLimitPerUser(0);
+                        await bridgeChannel.setRateLimitPerUser(config.options.discordDefaultSlow || 0);
                     }
                 }
             }
