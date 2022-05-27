@@ -18,6 +18,7 @@
         "logOptions": {
             "hypixelLogin": true,
             "hypixelDisconnect": true,
+            "unknownDisconnect": true,
             "hypixelKicked": true,
             "logIngameUseImage": true,
             "ingameChatLogFilter": ["EASTER EGG NEARBY!", "BUSY", "AWAY", "APPEARING OFFLINE"]
@@ -43,6 +44,7 @@
         "guildPlayerJoin": false
     },
     "options": {
+        "unknownDisconnectRelog": true,
         "ingameChatConsoleLog": true,
         "discordUseSlowCommand": true,
         "discordDefaultSlow": 0,

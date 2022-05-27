@@ -40,6 +40,25 @@ require('./handlers/discordEvents')(discordClient);
 require('./handlers/discordCommands')(discordClient);
 require('./handlers/api')();
 
+if (config.options.unknownDisconnectRelog) {
+    setInterval(async () => {
+        if (!minecraftClient?.player) {
+            if (config.channels.logOptions.unknownDisconnect) {
+                await discordClient.channels.cache
+                    .get(config.channels.log)
+                    ?.send(`${config.minecraft.ingameName + ' has' || 'I have'} been disconnected from Hypixel unexpectedly. Trying to reconnect...`);
+            }
+            try {
+                minecraftClient.quit('Disconnected from Hypixel unexpectedly.');
+            } catch (err) {
+                console.error(err);
+            }
+            global.minecraftClient = mineflayer.createBot(minecraftLoginOptions);
+            startMinecraftBot(miencraftClient, discordClient);
+        }
+    }, 1000 * 60 * 5); // 5 minutes
+}
+
 process.on('uncaughtException', console.error);
 process.on('unhandledRejection', console.error);
 
