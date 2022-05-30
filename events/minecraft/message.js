@@ -8,7 +8,7 @@ const { getRequirements, getRequirementEmbed } = require('../../helper/requireme
 
 const SHORT_STATS = {
     lilyWeight: 'LILY',
-    senitherWeight: 'SENI',
+    senitherWeight: 'SEN',
     skillAverage: 'SA',
     hypixelLevel: 'HLVL',
     catacombs: 'CATA',
