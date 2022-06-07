@@ -54,7 +54,7 @@ if (config.options.unknownDisconnectRelog) {
                 console.error(err);
             }
             global.minecraftClient = mineflayer.createBot(minecraftLoginOptions);
-            startMinecraftBot(miencraftClient, discordClient);
+            startMinecraftBot(minecraftClient, discordClient);
         }
     }, 1000 * 60 * 5); // 5 minutes
 }
