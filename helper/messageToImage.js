@@ -24,9 +24,9 @@ function getHeight(message) {
     const canvas = Canvas.createCanvas(1, 1);
     const ctx = canvas.getContext('2d');
     const splitMessageSpace = message.split(' ');
-    splitMessageSpace.forEach((msg) => {
-        if (!msg.startsWith('§')) msg = `§r${msg}`;
-    });
+    for (const [i, msg] of Object.entries(splitMessageSpace)) {
+        if (!msg.startsWith('§')) splitMessageSpace[i] = `§r${msg}`;
+    }
     const splitMessage = splitMessageSpace.join(' ').split(/§|\n/g);
     splitMessage.shift();
     ctx.font = '40px Minecraft';
