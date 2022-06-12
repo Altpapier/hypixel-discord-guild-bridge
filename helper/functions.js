@@ -84,6 +84,19 @@ async function formatMentions(client, message) {
             }
         }
     }
+    if (message.includes('<@&') && message.includes('>')) {
+        const guildId = client.channels.cache.get(config.channels.guildIngameChat)?.guildId;
+        const mentions = message.match(/<@&\d+>/g);
+        const roles = await client.guilds.cache.get(guildId)?.roles.fetch();
+        for (const mention of mentions) {
+            const role = roles.get(mention.replace(/[^0-9]/g, ''));
+            if (role) {
+                message = message.replace(mention, `@${role.name}`);
+            } else {
+                message = message.replace(mention, `@Unknown Role`);
+            }
+        }
+    }
     if (message.includes('<#') && message.includes('>')) {
         const guild = client.channels.cache.get(config.channels.guildIngameChat)?.guild;
 
