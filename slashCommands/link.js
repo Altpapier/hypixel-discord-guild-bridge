@@ -59,7 +59,7 @@ module.exports = {
                         n(`
                     You have successfully ${
                         wasLinkedBefore ? 'updated' : 'set'
-                    } your discord link. You can now use the guild ingame chat with it displaying your guild rank.
+                    } your discord link. You can now use the guild ingame chat with it displaying your guild rank and username.
                 `)
                     ),
             ],

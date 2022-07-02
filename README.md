@@ -32,7 +32,7 @@ Know if a message was successfully sent into the guild chat or not
 
 ### Account Linking
 
-Link your Minecraft account to the Discord bot using the `/link` slash command for your guild rank to be displayed when sending messages in the guild in game chat Discord channel
+Link your Minecraft account to the Discord bot using the `/link` slash command for your guild rank and Minecraft username to be displayed when sending messages in the guild in game chat Discord channel
 
 ![description](https://imgur.com/AmhJIfQ.png)
 
