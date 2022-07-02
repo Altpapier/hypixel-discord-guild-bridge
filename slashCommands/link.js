@@ -43,9 +43,12 @@ module.exports = {
         }
 
         const links = JSON.parse(fs.readFileSync('./data/guildLinks.json'));
+        const linkUsernames = JSON.parse(fs.readFileSync('./data/guildLinkUsernames.json'));
         const wasLinkedBefore = links[interaction.user.id];
         links[interaction.user.id] = playerData?.uuid;
+        linkUsernames[interaction.user.id] = playerData?.player.displayname;
         fs.writeFileSync('./data/guildLinks.json', JSON.stringify(links, null, 2));
+        fs.writeFileSync('./data/guildLinkUsernames.json', JSON.stringify(linkUsernames, null, 2));
 
         return interaction.editReply({
             embeds: [

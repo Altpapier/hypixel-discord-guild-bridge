@@ -18,8 +18,13 @@ module.exports = {
             const linkedPlayers = JSON.parse(fs.readFileSync('./data/guildLinks.json'));
             let playerRank;
             if (linkedPlayers[message.author.id]) {
+                const linkUsernames = JSON.parse(fs.readFileSync('./data/guildLinkUsernames.json'));
                 const allRanks = JSON.parse(fs.readFileSync('./data/guildRanks.json'));
                 playerRank = allRanks[linkedPlayers[message.author.id]];
+
+                if (linkUsernames[message.author.id]) {
+                    message.author.username = linkUsernames[message.author.id];
+                }
             }
             if (playerRank) {
                 message.author.username += ` [${playerRank}]`;
