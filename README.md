@@ -1,4 +1,4 @@
-﻿# Hypixel Discord Guild Bridge
+# Hypixel Discord Guild Bridge
 
 If you have any suggestions or bugs you find using this bot, make sure to submit them [here](https://github.com/Altpapier/hypixel-discord-guild-bridge/issues)
 
@@ -349,7 +349,7 @@ To check other player requirements, you can use the `/requirements` command in a
 
 To enable this feature, set `enabled` to `true`. This will send a welcome message into the guild chat to welcome a user! This can for example also be information about the weekly guild experience requirements. The bot will automatically replace `{USERNAME}` with the newly joined guild member.
 
-13. **Frag Bot** (**Use at your own risc!**)
+13. **Frag Bot** (**Use at your own risk!**)
 
 ```
 "fragBot": {
@@ -362,7 +362,7 @@ To enable this feature, set `enabled` to `true`. This will send a welcome messag
 }
 ```
 
-To enable this feature, set `enabled` to `true`. If you wish for anyone on hypixel to be able to use this frag bot (_not recommended_) you can disable the whitelist by setting `whitelistEnabled` to `false`. By default, guild members will automatically be whitelisted to the frag bot. If you wish to disable this, set `whitelistGuildMembers` to `false`. You can add your own players to the whitelist as well that are for example not in the guild by adding items into the `whitelist` array.
+To enable this feature, set `enabled` to `true`. In `addedToQueueMessage`, the bot will automatically replace `{WAIT_TIME}` with the estimated queue time. If you wish for anyone on Hypixel to be able to use this frag bot (_not recommended_) you can disable the whitelist by setting `whitelistEnabled` to `false`. By default, guild members will automatically be whitelisted to the frag bot. If you wish to disable this, set `whitelistGuildMembers` to `false`. You can add your own players to the whitelist as well that are for example not in the guild by adding items into the `whitelist` array.
 _Example_:
 
 ```
