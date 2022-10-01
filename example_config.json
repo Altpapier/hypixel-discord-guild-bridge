@@ -57,7 +57,8 @@
         "paste": true,
         "render": true,
         "skills": true,
-        "weight": true
+        "weight": true,
+        "networth": true
     },
     "gexpManagment": {
         "weeklyGEXPRequirement": 50000

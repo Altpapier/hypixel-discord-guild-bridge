@@ -85,7 +85,7 @@ module.exports = {
             // INGAME COMMANDS
             if (sentMsg.trim().startsWith('!')) {
                 const cmd = sentMsg.trim().split(' ')[0].substring(1);
-                const command = minecraftClient?.commands?.get(cmd);
+                const command = minecraftClient?.commands?.get(cmd === 'nw' ? 'networth' : cmd);
                 if (command) {
                     command.execute(discordClient, sentMsg, messageAuthor);
                 }
