@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { MessageButton, MessageActionRow, MessageReaction } = require('discord.js');
+const { MessageButton, MessageActionRow } = require('discord.js');
 const config = require('../config.json');
 const nbt = require('prismarine-nbt');
 const util = require('util');
@@ -13,9 +13,9 @@ function formatDiscordMessage(message) {
     return message.replace(/\*/g, '\\*').replace(/_/g, '\\_').replace(/~/g, '\\~').replace(/`/g, '\\`').replace(/>/g, '\\>');
 }
 
-function getLastProfile(data, uuid) {
+function getLastProfile(data) {
     const profiles = data.profiles;
-    return profiles.sort((a, b) => a.members[uuid]?.last_save - b.members[uuid]?.last_save).at(-1);
+    return profiles.sort((a, b) => b.selected - a.selected)[0];
 }
 
 function isValidUsername(username) {
@@ -38,11 +38,9 @@ async function getPlayer(player, profile) {
     if (!hypixelResponse) throw new Error("Couldn't get a response from the API");
     if (hypixelResponse.profiles === null) throw new Error(`Couldn\'t find any Skyblock profile that belongs to ${player}`);
 
-    let profileData = getLastProfile(hypixelResponse, mojangResponse);
+    let profileData = getLastProfile(hypixelResponse);
     if (profile) {
-        profileData =
-            hypixelResponse.profiles.find((p) => p.cute_name.toLowerCase() === profile.toLowerCase()) ||
-            getLastProfile(hypixelResponse, mojangResponse);
+        profileData = hypixelResponse.profiles.find((p) => p.cute_name.toLowerCase() === profile.toLowerCase()) || getLastProfile(hypixelResponse);
     }
 
     if (!profileData) throw new Error(`Couldn't find the specified Skyblock profile that belongs to ${player}.`);
