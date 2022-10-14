@@ -73,6 +73,7 @@ The bot also includes an integrated frag bot that can be used by the guild. The 
 |`render`| Will take an inventory slot out of a player's inventory and render that players image and upload that one to Imgur. `imgurClientId` required.|`!render [player] [profile] (slot)`| `!render Refraction 1`|![description](https://i.imgur.com/LQbj06Q.png)|
 |`skills`| Will return a player's skill average| `!skills [player] [profile]`|`!skills Altpapier`| `Altpapier's skill average is 48.56` |
 |`weight`| Will return a player's senither and lily weight| `!weight [player] [profile]`|`!weight Altpapier`|`Altpapier has 8,375 senither weight and 12,202 lily weight.` |
+|`networth`| Will return a player's networth|`!networth/nw [player] [profile]`|`!networth Altpapier`|`Altpapier's networth is 3,703,575,174`
 
 ### Slash Commands
 
