@@ -250,7 +250,8 @@ The message sent confirmation will react on messages sent by Discord members in 
 	"paste": true,
 	"render": true,
 	"skills": true,
-	"weight": true
+	"weight": true,
+	"networth": true
 }
 ```
 
