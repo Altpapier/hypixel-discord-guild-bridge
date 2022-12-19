@@ -193,6 +193,17 @@ async function UUIDtoName(uuid) {
     }
 }
 
+function numberformatter(num, num2) {
+    num = Number(num);
+    if (num > 999999999999)
+        return Math.abs(num) > 999999999999 ? Math.sign(num) * (Math.abs(num) / 1000000000000).toFixed(num2) + 'T' : Math.sign(num) * Math.abs(num);
+    if (num > 999999999)
+        return Math.abs(num) > 999999999 ? Math.sign(num) * (Math.abs(num) / 1000000000).toFixed(num2) + 'B' : Math.sign(num) * Math.abs(num);
+    if (num > 999999) return Math.abs(num) > 999999 ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(num2) + 'M' : Math.sign(num) * Math.abs(num);
+    if (num > 999) return Math.abs(num) > 999 ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(num2) + 'K' : Math.sign(num) * Math.abs(num);
+    if (num <= 999) return num.toFixed(0);
+}
+
 async function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -279,6 +290,7 @@ module.exports = {
     hypixelRequest,
     nameToUUID,
     UUIDtoName,
+    numberformatter,
     sleep,
     n,
     addCommas,

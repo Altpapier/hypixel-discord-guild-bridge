@@ -1,6 +1,6 @@
 const { getNetworth } = require('skyhelper-networth');
 const config = require('../config.json');
-const { getPlayer, addCommas } = require('../helper/functions.js');
+const { getPlayer, numberformatter } = require('../helper/functions.js');
 
 module.exports = {
     name: 'networth',
@@ -23,7 +23,10 @@ module.exports = {
             }
 
             minecraftClient.chat(
-                `/gc @${messageAuthor}${messageAuthor === username ? "'s" : ` ${username}'s`} networth is ${addCommas(networth.networth.toFixed())}`
+                `/gc @${messageAuthor}${messageAuthor === username ? "'s" : ` ${username}'s`} networth is ${numberformatter(
+                    networth.networth.toFixed(),
+                    3
+                )}`
             );
         }
     },
