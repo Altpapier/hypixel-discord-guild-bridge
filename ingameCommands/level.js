@@ -16,8 +16,7 @@ module.exports = {
 
             minecraftClient.chat(
                 `/gc @${messageAuthor}${messageAuthor === username ? "'s" : ` ${username}'s`} SkyBlock level is ${Number(
-                    toFixed((playerProfile.leveling?.experience || 0) / 100),
-                    2
+                    toFixed((playerProfile.leveling?.experience || 0) / 100, 2)
                 )}.`
             );
         }
