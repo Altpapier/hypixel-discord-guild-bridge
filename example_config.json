@@ -58,7 +58,8 @@
         "render": true,
         "skills": true,
         "weight": true,
-        "networth": true
+        "networth": true,
+        "level": true
     },
     "gexpManagment": {
         "weeklyGEXPRequirement": 50000
