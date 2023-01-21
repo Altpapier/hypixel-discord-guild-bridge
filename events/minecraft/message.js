@@ -7,12 +7,16 @@ const generateMessageImage = require('../../helper/messageToImage.js');
 const { getRequirements, getRequirementEmbed } = require('../../helper/requirements.js');
 
 const SHORT_STATS = {
+    skyblockLevel: 'LVL',
+    networth: 'NW',
     lilyWeight: 'LILY',
     senitherWeight: 'SEN',
     skillAverage: 'SA',
     hypixelLevel: 'HLVL',
     catacombs: 'CATA',
     slayer: 'SLAYER',
+    bwLevel: 'BWSTARS',
+    bwFKDR: 'BWFKDR',
 };
 
 let messagesCache = [];
@@ -167,6 +171,8 @@ module.exports = {
                         if (uuid) {
                             const userRequirements = await getRequirements(uuid);
                             let requirementsMet = 0;
+                            let requirementsMetSkyblock = 0;
+                            let requirementsMetBedwars = 0;
                             let requirementsDescription = `${username}: `;
                             for (const [stat, requirement] of Object.entries(config.guildRequirement.requirements)) {
                                 if (requirement instanceof Object && stat === 'slayer') {
@@ -178,13 +184,18 @@ module.exports = {
                                         }
                                         slayerDescription.push(userRequirements.slayer[slayerType] || 0);
                                     }
-                                    if (slayerRequirementsMet >= Object.keys(requirement).length) requirementsMet++;
+                                    if (slayerRequirementsMet >= Object.keys(requirement).length) {
+                                        requirementsMet++;
+                                        requirementsMetSkyblock++;
+                                    }
                                     requirementsDescription += `${stat.toUpperCase()}: ${slayerDescription.join('/')} ${
                                         slayerRequirementsMet >= Object.keys(requirement).length ? '✔' : '✖'
                                     } |`;
                                 } else {
                                     if (userRequirements[stat] >= requirement) {
                                         requirementsMet++;
+                                        if (!stat.includes('bw')) requirementsMetSkyblock++;
+                                        else requirementsMetBedwars++;
                                         requirementsDescription += `${SHORT_STATS[stat]}: ${addCommas(userRequirements[stat]?.toFixed())} ✔|`;
                                     } else {
                                         requirementsDescription += `${SHORT_STATS[stat]}: ${addCommas(userRequirements[stat]?.toFixed())} ✖|`;
@@ -195,8 +206,18 @@ module.exports = {
                             minecraftClient.chat(`/oc ${requirementsDescription}`);
                             await sleep(1000);
 
+                            let totalBwStats = 0;
+                            for (const stat of Object.keys(config.guildRequirement.requirements)) {
+                                if (stat.includes('bw')) {
+                                    totalBwStats++;
+                                }
+                            }
                             if (
-                                requirementsMet >= (config.guildRequirement.minRequired || Object.keys(config.guildRequirement.requirements).length)
+                                requirementsMet >=
+                                    (config.guildRequirement.minRequired || Object.keys(config.guildRequirement.requirements).length) ||
+                                (config.guildRequirement.acceptEitherSkyblockOrBedwars &&
+                                    (requirementsMetBedwars >= totalBwStats ||
+                                        requirementsMetSkyblock >= Object.keys(config.guildRequirement.requirements).length - totalBwStats))
                             ) {
                                 if (config.guildRequirement.autoAccept) {
                                     minecraftClient.chat(command);

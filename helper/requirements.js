@@ -1,23 +1,31 @@
 const { MessageEmbed } = require('discord.js');
 const config = require('../config.json');
-const { hypixelRequest, hypixelLevel, addCommas } = require('./functions.js');
+const { hypixelRequest, hypixelLevel, addCommas, toFixed } = require('./functions.js');
+const { getBedwarsLevel } = require('./getBedwarsLevel');
 const { getSkillAverage, getSkillLevel } = require('./skills');
 const { getSenitherWeight, getLilyWeight } = require('./weight');
+const { getNetworth } = require('skyhelper-networth');
 
 const LONG_STATS = {
+    skyblockLevel: 'SkyBlock Level',
+    networth: 'Networth',
     lilyWeight: 'Lily Weight',
     senitherWeight: 'Senither Weight',
     skillAverage: 'Skill Average',
     hypixelLevel: 'Hypixel Level',
     catacombs: 'Catacombs',
     slayer: 'Slayer',
+    bwLevel: 'Bedwars Stars',
+    bwFKDR: 'Bedwars FKDR',
 };
 
 async function getRequirements(uuid) {
+    const configReqs = config.guildRequirement?.requirements;
     const result = {
+        skyblockLevel: null,
+        networth: null,
         senitherWeight: null,
         lilyWeight: null,
-        hypixelLevel: null,
         skillAverage: null,
         catacombs: null,
         slayer: {
@@ -27,12 +35,20 @@ async function getRequirements(uuid) {
             enderman: null,
             blaze: null,
         },
+        hypixelLevel: null,
+        bwLevel: null,
+        bwFKDR: null,
     };
 
     const sbData = await hypixelRequest(`https://api.hypixel.net/skyblock/profiles?uuid=${uuid}`, true);
     if ((sbData?.profiles?.length || 0) > 0) {
         for (const profile of sbData.profiles) {
             const memberData = profile?.members?.[uuid] || {};
+            const skyblockLevel = Number(toFixed((memberData.leveling?.experience || 0) / 100, 2));
+            let networth = 0;
+            try {
+                networth = (await getNetworth(memberData, profile?.banking?.balance || 0, { onlyNetworth: true })).networth;
+            } catch (e) {}
             let senitherWeight = getSenitherWeight(memberData);
             senitherWeight = senitherWeight.total + senitherWeight.totalOverflow;
             const lilyWeight = getLilyWeight(memberData).total;
@@ -44,6 +60,8 @@ async function getRequirements(uuid) {
             const enderman = getSkillLevel(memberData?.slayer_bosses?.enderman?.xp || 0, { skill: 'slayer' });
             const blaze = getSkillLevel(memberData?.slayer_bosses?.blaze?.xp || 0, { skill: 'slayer' });
 
+            if ((result.skyblockLevel || 0) < skyblockLevel) result.skyblockLevel = skyblockLevel;
+            if ((result.networth || 0) < networth) result.networth = networth;
             if ((result.senitherWeight || 0) < senitherWeight) result.senitherWeight = senitherWeight;
             if ((result.lilyWeight || 0) < lilyWeight) result.lilyWeight = lilyWeight;
             if ((result.skillAverage || 0) < skillAverage) result.skillAverage = skillAverage;
@@ -56,10 +74,12 @@ async function getRequirements(uuid) {
         }
     }
 
-    if (config.guildRequirement?.requirements?.hypixelLevel) {
+    if (configReqs?.hypixelLevel || configReqs?.bwLevel || configReqs?.bwFKDR) {
         const playerRes = await hypixelRequest(`https://api.hypixel.net/player?uuid=${uuid}`, true);
         if (playerRes?.player) {
-            result.hypixelLevel = hypixelLevel(playerRes.player.networkExp || 0);
+            if (configReqs?.hypixelLevel) {
+                result.hypixelLevel = hypixelLevel(playerRes.player.networkExp || 0);
+            }
 
             const achievements = playerRes.player.achievements;
             const skills = [
@@ -76,6 +96,15 @@ async function getRequirements(uuid) {
             if (result.skillAverage < skillAverage) {
                 result.skillAverage = skillAverage;
             }
+
+            const bwStats = playerRes?.player?.stats?.Bedwars;
+            if (configReqs?.bwLevel) {
+                result.bwLevel = getBedwarsLevel(bwStats?.Experience || 0);
+            }
+
+            if (configReqs?.bwFKDR) {
+                result.bwFKDR = Number((bwStats?.final_kills_bedwars / bwStats?.final_deaths_bedwars).toFixed(2));
+            }
         } else {
             result.hypixelLevel = null;
         }
@@ -86,6 +115,8 @@ async function getRequirements(uuid) {
 
 function getRequirementEmbed(requirementData, username, officerChatMessage) {
     let requirementsMet = 0;
+    let requirementsMetSkyblock = 0;
+    let requirementsMetBedwars = 0;
     const requirementsEmbed = new MessageEmbed().setTitle(`${username}'s Requirements`).setColor('BLURPLE');
 
     let requirementsDescription = [];
@@ -101,6 +132,7 @@ function getRequirementEmbed(requirementData, username, officerChatMessage) {
             }
             if (slayerRequirementsMet >= Object.keys(requirement).length) {
                 requirementsMet++;
+                requirementsMetSkyblock++;
             }
             requirementsDescription.push(
                 `**Slayer**: \`${slayerDescription.join('/')}\` ${slayerRequirementsMet >= Object.keys(requirement).length ? '✅' : '⛔'}`
@@ -108,16 +140,28 @@ function getRequirementEmbed(requirementData, username, officerChatMessage) {
         } else {
             if (requirementData[stat] >= requirement) {
                 requirementsMet++;
+                if (!stat.includes('bw')) requirementsMetSkyblock++;
+                else requirementsMetBedwars++;
                 requirementsDescription.push(`**${LONG_STATS[stat]}**: \`${addCommas(requirementData[stat]?.toFixed())}\` ✅`);
             } else {
                 requirementsDescription.push(`**${LONG_STATS[stat]}**: \`${addCommas(requirementData[stat]?.toFixed())}\` ⛔`);
             }
         }
     }
-
+    let totalBwStats = 0;
+    for (const stat of Object.keys(config.guildRequirement.requirements)) {
+        if (stat.includes('bw')) {
+            totalBwStats++;
+        }
+    }
     if (config.guildRequirement.autoAccept) {
         requirementsDescription.unshift('');
-        if (requirementsMet >= (config.guildRequirement.minRequired || Object.keys(config.guildRequirement.requirements).length)) {
+        if (
+            requirementsMet >= (config.guildRequirement.minRequired || Object.keys(config.guildRequirement.requirements).length) ||
+            (config.guildRequirement.acceptEitherSkyblockOrBedwars &&
+                (requirementsMetBedwars >= totalBwStats ||
+                    requirementsMetSkyblock >= Object.keys(config.guildRequirement.requirements).length - totalBwStats))
+        ) {
             if (officerChatMessage) {
                 requirementsDescription.unshift(`**${username}** has met the requirements and automatically got accepted!`);
             } else {
