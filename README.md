@@ -323,6 +323,8 @@ You can also set what routes should be available by either setting the value to 
 	"enabled": false,
 	"autoAccept": false,
 	"requirements": {
+		"skyblockLevel": 0,
+		"networth": 0,
 		"senitherWeight": 0,
 		"lilyWeight": 0,
 		"hypixelLevel": 0,
@@ -333,13 +335,16 @@ You can also set what routes should be available by either setting the value to 
 			"wolf": 0,
 			"enderman": 0,
 			"blaze": 0
-		}
-	}
+		},
+		"bwLevel": 0,
+		"bwFKDR": 0
+	},
+	"acceptEitherSkyblockOrBedwars": false
 }
 ```
 
 To enable this feature, set `enabled` to `true`. If you wish for players that request to join the guild and meet the requirements to automatically be accepted into the guild, set `autoAccept` to `true`. If `autoAccept` is set to `false` this will only send a message with the players requirements into the officer chat. If you wish for players to be accepted even if they only meet a couple of requirements, you can add the `minRequired` key to the `guildRequirement` object with the minimum required requirements.
-If you wish to not include one of the requirement options, please just keep the value at `0`. Else you can set the values of the requirements you want your guild to have, to whatever you want.  
+If you wish to not include one of the requirement options, please just keep the value at `0`. Else you can set the values of the requirements you want your guild to have, to whatever you want. Set the `acceptEitherSkyblockOrBedwars` value to `true` if you want the player to meet the requirements if it either meets the SkyBlock or Bedwars requirements.
 To check other player requirements, you can use the `/requirements` command in a Discord channel.
 
 12. **Guild Welcome**

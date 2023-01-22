@@ -26,7 +26,7 @@ module.exports = {
         const uuid = await nameToUUID(player);
         if (uuid) {
             const requirementData = await getRequirements(uuid).catch((err) => {
-                return interaction.editReply({ embeds: [errorEmbed(null, err)] });
+                return interaction.editReply({ embeds: [errorEmbed(null, err.message)] });
             });
 
             const requirementEmbed = getRequirementEmbed(requirementData, player, false);

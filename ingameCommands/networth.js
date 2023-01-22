@@ -14,7 +14,7 @@ module.exports = {
                 return minecraftClient.chat(`/gc @${messageAuthor} ${err}`);
             });
 
-            const networth = await getNetworth(searchedPlayer.memberData, searchedPlayer.profileData?.banking?.balance, { onlyNetworth: true });
+            const networth = await getNetworth(searchedPlayer.memberData, searchedPlayer.profileData?.banking?.balance || 0, { onlyNetworth: true });
 
             if (networth.noInventory) {
                 return minecraftClient.chat(
