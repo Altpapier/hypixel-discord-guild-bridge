@@ -1,5 +1,5 @@
 const { getRequirements, getRequirementEmbed, LONG_STATS } = require('../helper/requirements.js');
-const { nameToUUID, createCollector, n } = require('../helper/functions.js');
+const { nameToUUID, createCollector, n, addCommas } = require('../helper/functions.js');
 const { Constants, MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 const { STRING } = Constants.ApplicationCommandOptionTypes;
 const { errorEmbed } = require('../helper/embeds.js');
@@ -50,7 +50,7 @@ module.exports = {
                                         });
                                         return `**${LONG_STATS[name]}**: \`${map.join('/')}\``;
                                     } else if (!isNaN(value)) {
-                                        return `**${LONG_STATS[name]}**: \`${value}\``;
+                                        return `**${LONG_STATS[name]}**: \`${addCommas(value)}\``;
                                     }
                                 })
                                 .join('\n')}
