@@ -232,6 +232,7 @@ Here you can set which events should be broadcasted into the `Guild Ingame Chat`
 "options": {
 	"ingameChatConsoleLog": true,
 	"discordUseSlowCommand": true,
+	"imageSizeMultiplier": 1,
 	"discordDefaultSlow": 0,
 	"messageSentConfirmation": {
 		"checkmarkReactions": true,
@@ -242,7 +243,7 @@ Here you can set which events should be broadcasted into the `Guild Ingame Chat`
 
 `ingameChatConsoleLog` will show the Minecraft chat in the terminal. If you wish for it to not show in the console, make sure to set that value to `false`.
 `discordUseSlowCommand` will also set a slow mode on the `Guild Ingame Chat` if this was enabled or disabled by a guild staff member using `/g slow`. By default, the slow mode on the channel is set to 0 seconds. You can edit that by changing the `discordDefaultSlow` value to any number (in seconds).
-The message sent confirmation will react on messages sent by Discord members in the `Guild Ingame Chat`. If the message a member sent was sent successfully the bot will react with ✅. If the message was not sent successfully because of `You cannot say the same message twice!` or other reasons the bot will react with ⛔. To disable either both or one of those set the value of `checkmarkReactions` and/or `failedReactions` to `false`.
+The message sent confirmation will react on messages sent by Discord members in the `Guild Ingame Chat`. If the message a member sent was sent successfully the bot will react with ✅. If the message was not sent successfully because of `You cannot say the same message twice!` or other reasons the bot will react with ⛔. To disable either both or one of those set the value of `checkmarkReactions` and/or `failedReactions` to `false`. If you want to make the message images a bit smaller you can reduce the `imageSizeMultiplier` to for example `0.8`.
 
 7. **Ingame Commands**
 
