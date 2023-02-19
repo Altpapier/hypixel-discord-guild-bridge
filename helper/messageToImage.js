@@ -1,4 +1,5 @@
 const Canvas = require('canvas');
+const config = require('../config.json');
 Canvas.registerFont('./fonts/MinecraftRegular-Bmg3.ttf', { family: 'Minecraft' });
 Canvas.registerFont('./fonts/unifont.ttf', { family: 'MinecraftUnicode' });
 
@@ -21,6 +22,8 @@ const RGBA_COLOR = {
     f: 'rgba(255,255,255,1)',
 };
 
+const multiplier = config?.options?.imageSizeMultiplier || 1;
+
 function getHeight(message) {
     const canvas = Canvas.createCanvas(1, 1);
     const ctx = canvas.getContext('2d');
@@ -30,22 +33,22 @@ function getHeight(message) {
     }
     const splitMessage = splitMessageSpace.join(' ').split(/§|\n/g);
     splitMessage.shift();
-    ctx.font = '40px Minecraft, MinecraftUnicode';
+    ctx.font = `${(40 * multiplier).toFixed()}px Minecraft, MinecraftUnicode`;
 
     let width = 5;
-    let height = 35;
+    let height = 35 * multiplier;
 
     for (const msg of splitMessage) {
         const currentMessage = msg.substring(1);
         if (width + ctx.measureText(currentMessage).width > 1000 || msg.charAt(0) === 'n') {
             width = 5;
-            height += 40;
+            height += 40 * multiplier;
         }
         width += ctx.measureText(currentMessage).width;
     }
-    if (width == 5) height -= 40;
+    if (width == 5) height -= 40 * multiplier;
 
-    return height + 10;
+    return height + (10 * multiplier);
 }
 
 function generateMessageImage(message) {
@@ -58,19 +61,19 @@ function generateMessageImage(message) {
     }
     const splitMessage = splitMessageSpace.join(' ').split(/§|\n/g);
     splitMessage.shift();
-    ctx.shadowOffsetX = 4;
-    ctx.shadowOffsetY = 4;
+    ctx.shadowOffsetX = 4 * multiplier;
+    ctx.shadowOffsetY = 4 * multiplier;
     ctx.shadowColor = '#131313';
-    ctx.font = '40px Minecraft, MinecraftUnicode';
+    ctx.font = `${(40 * multiplier).toFixed()}px Minecraft, MinecraftUnicode`;
 
     let width = 5;
-    let height = 35;
+    let height = 35 * multiplier;
     for (const msg of splitMessage) {
         const colorCode = RGBA_COLOR[msg.charAt(0)];
         const currentMessage = msg.substring(1);
         if (width + ctx.measureText(currentMessage).width > 1000 || msg.charAt(0) === 'n') {
             width = 5;
-            height += 40;
+            height += 40 * multiplier;
         }
         if (colorCode) {
             ctx.fillStyle = colorCode;
