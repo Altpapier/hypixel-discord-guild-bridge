@@ -91,6 +91,10 @@ The bot also includes an integrated frag bot that can be used by the guild. The 
 
 The included API can be used to send post requests to execute commands or send messages. More on that at the 10th point of the [Configurations](#configurations) chapter.
 
+### Webhooks
+
+The webhook feature can be used to send messages to an external api on events that happen within the guild. More on that at the 11th point of the [Configurations](#configurations) chapter.
+
 ### Other small features
 
 -   Mentioning a certain member, channel or emoji will format the message to send `#guild-ingame-chat` instead of `<#833696107228823612>` for example
@@ -317,7 +321,56 @@ You can also set what routes should be available by either setting the value to 
 |`unmute`|Unmute a muted guild member|`{ "player": "Altpapier }`
 |`setrank`|Set a guild member's guild rank| `{ "player": "Altpapier", "rank": "Staff" }`
 
-11. **Guild Requirement**
+11. **Webhook**
+
+```
+"webhook": {
+    "enabled": false,
+    "url": "",
+    "auth": "",
+    "events": {
+        "guildJoin": true,
+        "guildLeave": true,
+        "guildKick": true,
+        "guildPromote": true,
+        "guildDemote": true,
+        "guildMute": true,
+        "guildUnmute": true
+    }
+}
+```
+If you wish to have the bot send events to your webhook, you will need to enable this feature by setting `enabled` to `true`. It is recommended that you limit your webhook to be protected by an api key. You can do that by setting the `auth` value to your api key. You can also set the `url` value to your webhook url.  
+Example Config (_DO NOT USE_):
+
+```
+"webhook": {
+    "enabled": true,
+    "url": "https://api.example.com/webhook",
+    "auth": "password123",
+    "events": {
+        "guildJoin": true,
+        "guildLeave": true,
+        "guildKick": true,
+        "guildPromote": true,
+        "guildDemote": true,
+        "guildMute": true,
+        "guildUnmute": true
+    }
+}
+```
+
+You can also set what events should be sent to the webhook by either setting the value to `false` to not be sent or `true`.
+|Event|Trigger|Example Payload Data|
+|--|--|-- |
+|`guildJoin`|When a player joins the guild| `{ "event": "guildJoin", "payload": { "player": "Altpapier" } }` |
+|`guildLeave`|When a player leaves the guild| `{ "event": "guildLeave", "payload": { "player": "Altpapier" } }`
+|`guildKick`|When a player is kicked from the guild|`{ "event": "guildKick", "payload": { "player": "Altpapier" } }`
+|`guildPromote`|When a player is promoted to a higher rank within the guild| `{ "event": "guildPromote", "payload": { "player": "Altpapier", "rank": "Officer" } }`
+|`guildDemote`|When a player is demoted to a lower rank within the guild|`{ "event": "guildDemote", "payload": { "player": "Altpapier", "rank": "Member" } }`
+|`guildMute`|When a player is muted within the guild| `{ "event": "guildMute", "payload": { "player": "Altpapier", "duration": "1d" } }`
+|`guildUnmute`|When a player is unmuted within the guild| `{ "event": "guildUnmute", "payload": { "player": "Altpapier" } }`
+
+12. **Guild Requirement**
 
 ```
 "guildRequirement": {
@@ -348,7 +401,7 @@ To enable this feature, set `enabled` to `true`. If you wish for players that re
 If you wish to not include one of the requirement options, please just keep the value at `0`. Else you can set the values of the requirements you want your guild to have, to whatever you want. Set the `acceptEitherSkyblockOrBedwars` value to `true` if you want the player to meet the requirements if it either meets the SkyBlock or Bedwars requirements.
 To check other player requirements, you can use the `/requirements` command in a Discord channel.
 
-12. **Guild Welcome**
+13. **Guild Welcome**
 
 ```
 "guildWelcome": {
@@ -359,7 +412,7 @@ To check other player requirements, you can use the `/requirements` command in a
 
 To enable this feature, set `enabled` to `true`. This will send a welcome message into the guild chat to welcome a user! This can for example also be information about the weekly guild experience requirements. The bot will automatically replace `{USERNAME}` with the newly joined guild member.
 
-13. **Frag Bot** (**Use at your own risk!**)
+14. **Frag Bot** (**Use at your own risk!**)
 
 ```
 "fragBot": {
