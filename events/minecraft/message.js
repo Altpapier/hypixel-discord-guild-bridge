@@ -220,7 +220,12 @@ module.exports = {
                                         requirementsMetSkyblock >= Object.keys(config.guildRequirement.requirements).length - totalBwStats))
                             ) {
                                 if (config.guildRequirement.autoAccept) {
-                                    minecraftClient.chat(command);
+                                    const blacklist = (config.guildRequirement.autoAcceptBlacklist || []).map((b) => b.toLowerCase());
+                                    if (blacklist.includes(uuid.toLowerCase()) || blacklist.includes(username.toLowerCase())) {
+                                        minecraftClient.chat(`/oc ${username} is blacklisted!`);
+                                    } else {
+                                        minecraftClient.chat(command);
+                                    }
                                 } else {
                                     minecraftClient.chat(`/oc ${username} meets the requirements!`);
                                 }
@@ -229,7 +234,7 @@ module.exports = {
                             }
 
                             const { sendDiscordMessage } = require('../discord/ready');
-                            const embed = getRequirementEmbed(userRequirements, username, true);
+                            const embed = getRequirementEmbed(userRequirements, username, true, uuid);
                             sendDiscordMessage({
                                 channelId: config.channels.officerIngameChat,
                                 messageObject: { embeds: [embed] },

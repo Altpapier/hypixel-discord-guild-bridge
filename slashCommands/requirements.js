@@ -29,7 +29,7 @@ module.exports = {
                 return interaction.editReply({ embeds: [errorEmbed(null, err.message)] });
             });
 
-            const requirementEmbed = getRequirementEmbed(requirementData, player, false);
+            const requirementEmbed = getRequirementEmbed(requirementData, player, false, uuid);
 
             const reply = await interaction.editReply({ embeds: [requirementEmbed], components: [REQUIREMENT_BUTTON] });
 

@@ -81,6 +81,7 @@
     "guildRequirement": {
         "enabled": false,
         "autoAccept": false,
+        "autoAcceptBlacklist": [],
         "requirements": {
             "senitherWeight": 0,
             "lilyWeight": 0,

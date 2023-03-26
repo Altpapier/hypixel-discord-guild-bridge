@@ -113,7 +113,7 @@ async function getRequirements(uuid) {
     return result;
 }
 
-function getRequirementEmbed(requirementData, username, officerChatMessage) {
+function getRequirementEmbed(requirementData, username, officerChatMessage, uuid) {
     let requirementsMet = 0;
     let requirementsMetSkyblock = 0;
     let requirementsMetBedwars = 0;
@@ -155,6 +155,8 @@ function getRequirementEmbed(requirementData, username, officerChatMessage) {
         }
     }
     if (config.guildRequirement.autoAccept) {
+        const blacklist = (config.guildRequirement.autoAcceptBlacklist || []).map((b) => b.toLowerCase());
+        const isBlacklisted = blacklist.includes(username.toLowerCase()) || blacklist.includes(uuid.toLowerCase());
         requirementsDescription.unshift('');
         if (
             requirementsMet >= (config.guildRequirement.minRequired || Object.keys(config.guildRequirement.requirements).length) ||
@@ -163,13 +165,16 @@ function getRequirementEmbed(requirementData, username, officerChatMessage) {
                     requirementsMetSkyblock >= Object.keys(config.guildRequirement.requirements).length - totalBwStats))
         ) {
             if (officerChatMessage) {
-                requirementsDescription.unshift(`**${username}** has met the requirements and automatically got accepted!`);
+                if (isBlacklisted) requirementsDescription.unshift(`**${username}** has met the requirements but is blacklisted!`);
+                else requirementsDescription.unshift(`**${username}** has met the requirements and automatically got accepted!`);
             } else {
-                requirementsDescription.unshift(`**${username}** meets the requirements and is allowed to join the guild!`);
+                if (isBlacklisted) requirementsDescription.unshift(`**${username}** meets the requirements but is blacklisted!`);
+                else requirementsDescription.unshift(`**${username}** meets the requirements and is allowed to join the guild!`);
             }
             requirementsEmbed.setColor('GREEN');
         } else {
-            requirementsDescription.unshift(`**${username}** does not meet the requirements and is not allowed to join the guild.`);
+            if (isBlacklisted) requirementsDescription.unshift(`**${username}** does not meet the requirements and is blacklisted!`);
+            else requirementsDescription.unshift(`**${username}** does not meet the requirements and is not allowed to join the guild.`);
             requirementsEmbed.setColor('RED');
         }
     }

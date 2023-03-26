@@ -323,6 +323,7 @@ You can also set what routes should be available by either setting the value to 
 "guildRequirement": {
 	"enabled": false,
 	"autoAccept": false,
+	"autoAcceptBlacklist": [],
 	"requirements": {
 		"skyblockLevel": 0,
 		"networth": 0,
@@ -344,7 +345,7 @@ You can also set what routes should be available by either setting the value to 
 }
 ```
 
-To enable this feature, set `enabled` to `true`. If you wish for players that request to join the guild and meet the requirements to automatically be accepted into the guild, set `autoAccept` to `true`. If `autoAccept` is set to `false` this will only send a message with the players requirements into the officer chat. If you wish for players to be accepted even if they only meet a couple of requirements, you can add the `minRequired` key to the `guildRequirement` object with the minimum required requirements.
+To enable this feature, set `enabled` to `true`. If you wish for players that request to join the guild and meet the requirements to automatically be accepted into the guild, set `autoAccept` to `true`. If `autoAccept` is set to `false` this will only send a message with the players requirements into the officer chat. If a kicked player is rejoining the guild and gets accepted with auto accept, you can add their uuid or username into the `autoAcceptBlacklist` array. If you wish for players to be accepted even if they only meet a couple of requirements, you can add the `minRequired` key to the `guildRequirement` object with the minimum required requirements.
 If you wish to not include one of the requirement options, please just keep the value at `0`. Else you can set the values of the requirements you want your guild to have, to whatever you want. Set the `acceptEitherSkyblockOrBedwars` value to `true` if you want the player to meet the requirements if it either meets the SkyBlock or Bedwars requirements.
 To check other player requirements, you can use the `/requirements` command in a Discord channel.
 
