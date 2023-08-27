@@ -45,7 +45,13 @@ async function getPlayer(player, profile) {
 
     if (!profileData) throw new Error(`Couldn't find the specified Skyblock profile that belongs to ${player}.`);
 
-    return { memberData: profileData.members[mojangResponse], profileData, profiles: hypixelResponse.profiles };
+    return { memberData: profileData.members[mojangResponse], profileData, profiles: hypixelResponse.profiles, uuid: mojangResponse };
+}
+
+async function getMuseum(profile, uuid) {
+    const hypixelResponse = await hypixelRequest(`https://api.hypixel.net/skyblock/museum?profile=${profile}`, true);
+    if (!hypixelResponse) throw new Error("Couldn't get a response from the API");
+    return hypixelResponse.members?.[uuid];
 }
 
 async function getGuildMemberData(player) {
@@ -299,6 +305,7 @@ module.exports = {
     hypixelLevel,
     formatMentions,
     getPlayer,
+    getMuseum,
     decodeData,
     createCollector,
     getGuildMemberData,
