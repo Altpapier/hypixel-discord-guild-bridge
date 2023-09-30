@@ -17,19 +17,25 @@ module.exports = {
             const command = message.channelId === config.channels.officerIngameChat ? '/oc' : '/gc';
             const linkedPlayers = JSON.parse(fs.readFileSync('./data/guildLinks.json'));
             let playerRank;
+            
+            const displayName = message.member.nickname || message.author.username;
+            let effectiveName = displayName;
+            
             if (linkedPlayers[message.author.id]) {
                 const linkUsernames = JSON.parse(fs.readFileSync('./data/guildLinkUsernames.json'));
                 const allRanks = JSON.parse(fs.readFileSync('./data/guildRanks.json'));
                 playerRank = allRanks[linkedPlayers[message.author.id]];
-
+            
                 if (linkUsernames[message.author.id]) {
-                    message.author.username = linkUsernames[message.author.id];
+                    effectiveName = linkUsernames[message.author.id];
                 }
             }
+            
             if (playerRank) {
-                message.author.username += ` [${playerRank}]`;
+                effectiveName += ` [${playerRank}]`;
             }
-            let messagePrefix = `${command} ${message.author.username}: `;
+            
+            let messagePrefix = `${command} ${effectiveName}: `;
             if (message.type === 'REPLY') {
                 const repliedUser = message.mentions.repliedUser;
                 if (repliedUser.id === discordClient.user.id) {
@@ -38,12 +44,12 @@ module.exports = {
                         const mentionedMessage = await mentionedChannel.messages.fetch(message.reference.messageId);
                         const [attachment] = mentionedMessage.attachments.values();
                         if (attachment?.name) {
-                            messagePrefix = `${command} ${message.author.username} replied to ${attachment.name.slice(0, -4)}: `;
+                            messagePrefix = `${command} ${effectiveName} replied to ${attachment.name.slice(0, -4)}: `;
                             messagesReactionCache.set(mentionedMessage);
                         }
                     }
                 } else {
-                    messagePrefix = `${command} ${message.author.username} replied to ${repliedUser.username}: `;
+                    messagePrefix = `${command} ${effectiveName} replied to ${repliedUser.username}: `;
                 }
             }
 
