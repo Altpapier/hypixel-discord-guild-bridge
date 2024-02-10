@@ -103,7 +103,7 @@ The included API can be used to send post requests to execute commands or send m
 ### Requirements:
 
 -   Git
--   Note.js >= `16`
+-   Node.js >= `16`
 -   Minecraft Account
 -   Discord Bot (Token)
 
