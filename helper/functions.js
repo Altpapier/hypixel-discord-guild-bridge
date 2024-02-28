@@ -144,6 +144,27 @@ function isGuildEvent(message) {
     );
 }
 
+function determineEvent(message) {
+    if (message.includes('joined the guild!')) return 'guildJoin';
+    if (message.includes('left the guild!')) return 'guildLeave';
+    if (message.includes('was kicked from the guild by')) return 'guildKick';
+    if (message.includes('has muted')) return 'guildMute';
+    if (message.includes('has unmuted')) return 'guildUnmute';
+    if (message.includes('set the Guild Description to')) return 'guildDescription';
+    if (message.includes('as a Guild Game.')) return 'guildAddedGame';
+    if (message.includes('The Guild has reached')) return 'guildLevelUp';
+    if (message.includes('Guild Visibility')) return 'guildVisibilitySetting';
+    if (message.includes('Guild >') && message.includes('the chat throttle!')) return 'guildChatThrottle';
+    if (message.includes('GUILD QUEST TIER')) return 'guildQuest';
+    if (message.includes('gifted the') && message.includes('rank to')) return 'guildRankGift';
+    if (message.includes('They have gifted') && message.includes('ranks so far!')) return 'guildRankGift';
+    if (message.includes('was promoted from')) return 'guildPromote';
+    if (message.includes('was demoted from')) return 'guildDemote';
+    if (message.includes('joined.') && message.includes('Guild >')) return 'guildPlayerJoin';
+    if (message.includes('left.') && message.includes('Guild >')) return 'guildPlayerLeave';
+    return null;
+}
+
 function isShortGuildEvent(message) {
     if (message.includes('Commands') || message.includes(':')) return false;
     return (
@@ -310,4 +331,5 @@ module.exports = {
     createCollector,
     getGuildMemberData,
     isShortGuildEvent,
+    determineEvent
 };
