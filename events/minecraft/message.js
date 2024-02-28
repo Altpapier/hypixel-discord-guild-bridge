@@ -115,7 +115,7 @@ module.exports = {
                 const bridgeChannel = discordClient.channels.cache.get(config.channels.guildIngameChat);
                 if (bridgeChannel) {
                     await bridgeChannel.send({
-                        files: [new MessageAttachment(generateMessageImage(msgStringColor.substring(10)), `${messageAuthor}.png`)],
+                        files: [new MessageAttachment(generateMessageImage(msgStringColor.substring(10)), `${messageAuthor}.png`, {description: msgString})],
                     });
 
                     if (includedURLs.length > 0) {
@@ -127,7 +127,7 @@ module.exports = {
                     const officerChannel = discordClient.channels.cache.get(config.channels.officerIngameChat);
                     if (officerChannel) {
                         await officerChannel.send({
-                            files: [new MessageAttachment(generateMessageImage(msgStringColor.substring(12)), `${messageAuthor}.png`)],
+                            files: [new MessageAttachment(generateMessageImage(msgStringColor.substring(12)), `${messageAuthor}.png`, {description: msgString})],
                         });
 
                         if (includedURLs.length > 0) {
@@ -143,7 +143,7 @@ module.exports = {
             const bridgeChannel = discordClient.channels.cache.get(config.channels.guildIngameChat);
             if (bridgeChannel) {
                 await bridgeChannel.send({
-                    files: [new MessageAttachment(generateMessageImage(formattedMessage), 'guildEvent.png')],
+                    files: [new MessageAttachment(generateMessageImage(formattedMessage), 'guildEvent.png', {description: msgString})],
                 });
             }
         }
