@@ -45,13 +45,7 @@ async function getPlayer(player, profile) {
 
     if (!profileData) throw new Error(`Couldn't find the specified Skyblock profile that belongs to ${player}.`);
 
-    return { memberData: profileData.members[mojangResponse], profileData, profiles: hypixelResponse.profiles, uuid: mojangResponse };
-}
-
-async function getMuseum(profile, uuid) {
-    const hypixelResponse = await hypixelRequest(`https://api.hypixel.net/skyblock/museum?profile=${profile}`, true);
-    if (!hypixelResponse) throw new Error("Couldn't get a response from the API");
-    return hypixelResponse.members?.[uuid];
+    return { memberData: profileData.members[mojangResponse], profileData, profiles: hypixelResponse.profiles };
 }
 
 async function getGuildMemberData(player) {
@@ -67,6 +61,21 @@ async function getGuildMemberData(player) {
     if (!hypixelResponse?.player) throw new Error('This player never joined the Hypixel network before');
 
     return { player: hypixelResponse.player, uuid: mojangResponse };
+}
+
+async function getPlayerStatus(player) {
+    if (typeof player !== 'string' || !isValidUsername(player)) {
+        throw new Error('Invalid Username');
+    }
+
+    const mojangResponse = await nameToUUID(player);
+    if (!mojangResponse) throw new Error('Player not found');
+
+    const hypixelResponse = await hypixelRequest(`https://api.hypixel.net/status?uuid=${mojangResponse}`, true);
+    if (!hypixelResponse) throw new Error("Couldn't get a response from the API");
+    if (!hypixelResponse?.success) throw new Error('This player never joined the Hypixel network before');
+
+    return { status: hypixelResponse, uuid: mojangResponse };
 }
 
 async function decodeData(buffer) {
@@ -167,7 +176,7 @@ function createCollector({ interaction, reply, callback }) {
         collector.on('end', (r) => {
             interaction.editReply({ components: [] }).catch((err) => err);
         });
-    } catch (e) {}
+    } catch (e) { }
     return collector;
 }
 
@@ -194,6 +203,14 @@ async function nameToUUID(name) {
 async function UUIDtoName(uuid) {
     try {
         return (await axios.get(`https://sessionserver.mojang.com/session/minecraft/profile/${uuid}`)).data.name;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function farmingContests(uuid) {
+    try {
+        return (await axios.get(`https://dawjaw.net/jacobs`)).data;
     } catch (e) {
         return null;
     }
@@ -289,6 +306,19 @@ async function paginator(interaction, embeds) {
     });
 }
 
+function getTimeString(time) {
+    let totalSeconds = parseInt(time / 1000);
+    let totalMinutes = parseInt(totalSeconds / 60);
+    let totalHours = parseInt(totalMinutes / 60);
+    let totalDays = parseInt(totalHours / 24);
+    return (
+        (totalDays > 0 ? `${totalDays}d ` : "") +
+        (totalHours > 0 ? `${totalHours - totalDays * 24}h ` : "") +
+        (totalMinutes > 0 ? `${totalMinutes - 60 * totalHours}m ` : "") +
+        (totalSeconds > 0 ? `${totalSeconds - totalMinutes * 60}s ` : "")
+    );
+}
+
 module.exports = {
     includesIgnored,
     formatDiscordMessage,
@@ -305,9 +335,11 @@ module.exports = {
     hypixelLevel,
     formatMentions,
     getPlayer,
-    getMuseum,
     decodeData,
     createCollector,
     getGuildMemberData,
+    getPlayerStatus,
     isShortGuildEvent,
+    getTimeString,
+    farmingContests,
 };

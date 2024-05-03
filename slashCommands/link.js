@@ -24,7 +24,7 @@ module.exports = {
 
         const discordLink = playerData?.player?.socialMedia?.links?.DISCORD;
 
-        if (!discordLink || discordLink !== interaction.user.tag) {
+        if (!discordLink || discordLink !== interaction.user.username) {
             return interaction.editReply({
                 embeds: [
                     errorEmbed(

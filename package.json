@@ -10,15 +10,22 @@
     "license": "MIT",
     "dependencies": {
         "axios": "^0.26.1",
-        "canvas": "^2.9.1",
+        "bcrypt": "^5.1.1",
+        "bcryptjs": "^2.4.3",
+        "canvas": "^2.11.2",
         "cors": "^2.8.5",
         "cron": "^1.8.2",
-        "discord.js": "^13.6.0",
+        "discord.js": "^13.16.0",
         "express": "^4.17.3",
         "imgur-anonymous-uploader": "^1.1.4",
         "lilyweight": "^2.6.2",
-        "mineflayer": "^4.2.0",
-        "skyhelper-networth": "^1.16.2",
+        "minecraft-data": "^3.40.0",
+        "minecraft-protocol": "^1.43.2",
+        "mineflayer": "^4.10.1",
+        "node-gyp": "^9.4.0",
+        "protodef": "^1.15.0",
+        "readable-stream": "^4.4.2",
+        "skyhelper-networth": "^1.13.0",
         "sourcebin": "^4.3.5"
     }
 }
