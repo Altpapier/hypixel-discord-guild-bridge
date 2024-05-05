@@ -2299,7 +2299,10 @@ async function getInfoText(statistic, name_obj, full) {
                         if (xp < 97000) return 4;
                         if (xp < 197000) return 5;
                         if (xp < 347000) return 6;
-                        return 7;
+                        if (xp < 557000) return 7;
+                        if (xp < 847000) return 8;
+                        if (xp < 1247000) return 9;
+                        return 10;
                     };
                     getPlayerHypixel(name)
                         .then((player) => {
