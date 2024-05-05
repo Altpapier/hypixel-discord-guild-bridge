@@ -21,7 +21,12 @@
             "unknownDisconnect": true,
             "hypixelKicked": true,
             "logIngameUseImage": true,
-            "ingameChatLogFilter": ["EASTER EGG NEARBY!", "BUSY", "AWAY", "APPEARING OFFLINE"]
+            "ingameChatLogFilter": [
+                "EASTER EGG NEARBY!",
+                "BUSY",
+                "AWAY",
+                "APPEARING OFFLINE"
+            ]
         }
     },
     "discordServer": "",
@@ -54,12 +59,15 @@
         }
     },
     "ingameCommands": {
-        "paste": true,
-        "render": true,
-        "skills": true,
-        "weight": true,
-        "networth": true,
-        "level": true
+        "trigger": "!",
+        "discordEnabled": true,
+        "disabled": [],
+        "alias": {
+            "weight": ["we"],
+            "networth": ["nw"],
+            "carpentry": ["carp"],
+            "alchemy":["alch"]
+        }
     },
     "gexpManagment": {
         "weeklyGEXPRequirement": 50000
@@ -107,6 +115,10 @@
         "partyWelcomeMessage": "Hello! You can join a dungeon now. I will automatically leave after 5 seconds.",
         "whitelistGuildMembers": true,
         "whitelistEnabled": true,
-        "whitelist": ["MattTheCuber", "Musicord", "Altpapier"]
+        "whitelist": [
+            "MattTheCuber",
+            "Musicord",
+            "Altpapier"
+        ]
     }
 }

@@ -2,10 +2,16 @@ const config = require('../../config.json');
 const { formatMentions } = require('../../helper/functions.js');
 const messagesReactionCache = new Map();
 const fs = require('fs');
+const { getInfoText, getLeaderboard } = require('../../StatChecker.js');
+
+const webhooks = [
+    "1225614446509035581"
+]
 
 module.exports = {
     execute: async (discordClient, message) => {
-        if (message.author.bot || message.content === '') return;
+        if ((message.author.bot && !webhooks.includes(message.author.id)) || message.content === '') return;
+
 
         if (message.content.startsWith('\\')) {
             message.content = message.content.substring(1);
@@ -26,10 +32,14 @@ module.exports = {
                     message.author.username = linkUsernames[message.author.id];
                 }
             }
-            if (playerRank) {
-                message.author.username += ` [${playerRank}]`;
-            }
-            let messagePrefix = `${command} ${message.author.username}: `;
+            /*if (playerRank) {
+                if (message.member.nickname) {
+                    message.member.nickname += ` [${playerRank}]`;
+                } else {
+                    message.author.username += ` [${playerRank}]`;
+                }
+            }*/
+            let messagePrefix = `${command} ${message.member?.nickname ?? message.author.username}: `;
             if (message.type === 'REPLY') {
                 const repliedUser = message.mentions.repliedUser;
                 if (repliedUser.id === discordClient.user.id) {
@@ -38,12 +48,12 @@ module.exports = {
                         const mentionedMessage = await mentionedChannel.messages.fetch(message.reference.messageId);
                         const [attachment] = mentionedMessage.attachments.values();
                         if (attachment?.name) {
-                            messagePrefix = `${command} ${message.author.username} replied to ${attachment.name.slice(0, -4)}: `;
+                            messagePrefix = `${command} ${message.member?.nickname ?? message.author.username} replied to ${attachment.name.slice(0, -4)}: `;
                             messagesReactionCache.set(mentionedMessage);
                         }
                     }
                 } else {
-                    messagePrefix = `${command} ${message.author.username} replied to ${repliedUser.username}: `;
+                    messagePrefix = `${command} ${message.member?.nickname ?? message.author.username} replied to ${message.mentions.members.first()?.nickname ?? repliedUser.username}: `;
                 }
             }
 
@@ -67,6 +77,52 @@ module.exports = {
             }
 
             minecraftClient.chat(msg);
+
+            if (message.content.trim().startsWith(config.ingameCommands.trigger)) {
+                const cmd = message.content.trim().substring(config.ingameCommands.trigger.length).split(' ')[0].toLowerCase().replace("-", "");
+                for (let command of minecraftClient?.commands) {
+                    if (command.triggers(cmd)) {
+                        command.execute(message.content, message.author.username)
+                            .catch(err => {
+                                minecraftClient.chat(`/gc @${message.author.username} ${err}`);
+                            });
+                        break;
+                    }
+                }
+            }
+
+            let parts = message.content.toLowerCase().split(' ')
+
+            if (parts.length < 1)
+                return;
+            if (['!s', '!stats'].includes(parts[0]))
+                parts.shift();
+            if (parts.length < 1)
+                return;
+
+            let stat = parts[0];
+            if (stat.startsWith('!'))
+                stat = stat.substring(1);
+            else
+                return;
+            if (stat.startsWith('lb') || stat.startsWith('leaderboard')) {
+                getLeaderboard(message).then(reply => {
+                    if (reply != null) {
+                        minecraftClient.chat(`/gc @${reply}`);
+                    }
+                }, reason => console.error(reason)).catch(e => console.log(e));
+                return;
+            }
+            let name = parts.length > 1 ? parts[1] : message.author.username;
+            let full = parts.length > 1 ? parts.slice(1).join(' ') : '';
+
+            // Get the text thingys
+            getInfoText(stat, name, full).then(reply => {
+                if (reply != null) {
+                    minecraftClient.chat(`/gc @Stats: ${reply}`);
+                    return;
+                }
+            }, reason => console.error(reason)).catch(e => console.log(e));
         }
 
         async function react(messageSent, reaction) {

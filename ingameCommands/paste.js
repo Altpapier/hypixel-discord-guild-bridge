@@ -1,30 +1,34 @@
 const config = require('../config.json');
 const sourcebin = require('sourcebin');
+const BaseCommand = require('./baseCommand.js');
 
-module.exports = {
-    name: 'paste',
-    execute: async (discordClient, message, messageAuthor) => {
-        if (config.ingameCommands.paste) {
-            const paste = message.split(' ').slice(1).join(' ');
-            if (paste.length < 1) return minecraftClient.chat(`/gc @${messageAuthor} You must provide a paste to paste.`);
+class PasteCommand extends BaseCommand {
 
-            const bin = await sourcebin
-                .create(
-                    [
-                        {
-                            content: paste,
-                            language: 'text',
-                        },
-                    ],
+    constructor() {
+        super('paste');
+    }
+
+    execute = async (message, messageAuthor) => {
+        const paste = message.split(' ').slice(1).join(' ');
+        if (paste.length < 1)
+            return this.sendReply(`@${messageAuthor} You must provide a paste to paste.`);
+
+        const bin = await sourcebin
+            .create(
+                [
                     {
-                        title: `${messageAuthor}'s Paste`,
-                    }
-                )
-                .catch((err) => {
-                    return minecraftClient.chat(`/gc @${messageAuthor} ${err}`);
-                });
+                        content: paste,
+                        language: 'text',
+                    },
+                ],
+                {
+                    title: `${messageAuthor}'s Paste`,
+                }
+            );
 
-            return minecraftClient.chat(`/gc @${messageAuthor} ${bin.url}`);
-        }
-    },
-};
+        return this.sendReply(`${messageAuthor} ${bin.url}`);
+    }
+}
+
+
+module.exports = new PasteCommand();
