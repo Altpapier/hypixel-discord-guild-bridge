@@ -19,6 +19,8 @@
         "express": "^4.17.3",
         "imgur-anonymous-uploader": "^1.1.4",
         "lilyweight": "^2.6.2",
+        "mineflayer": "^4.2.0",
+        "skyhelper-networth": "^1.18.7",
         "minecraft-data": "^3.40.0",
         "minecraft-protocol": "^1.43.2",
         "mineflayer": "^4.10.1",
