@@ -2277,10 +2277,13 @@ async function getInfoText(statistic, name_obj, full) {
                                 `${player.username} has a total of ${dot(
                                     player.mining_core.powder_mithril +
                                     player.mining_core.powder_spent_mithril
-                                )} mithril powder and ${dot(
+                                )} mithril powder, ${dot(
                                     player.mining_core.powder_gemstone +
                                     player.mining_core.powder_spent_gemstone
-                                )} gemstone powder`.replace(/NaN/g, "0")
+                                )} gemstone powder, and ${dot(
+                                    player.mining_core.powder_glacite +
+                                    player.mining_core.powder_spent_glacite
+                                    )} glacite powder`.replace(/NaN/g, "0")
                             );
                         })
                         .catch((e) => {
