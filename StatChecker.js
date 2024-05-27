@@ -2283,7 +2283,7 @@ async function getInfoText(statistic, name_obj, full) {
                                 )} gemstone powder, and ${dot(
                                     player.mining_core.powder_glacite +
                                     player.mining_core.powder_spent_glacite
-                                    )} glacite powder`.replace(/NaN/g, "0")
+                                    )} glacite powder.`.replace(/NaN/g, "0")
                             );
                         })
                         .catch((e) => {
