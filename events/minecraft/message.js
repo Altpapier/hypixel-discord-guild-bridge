@@ -2,7 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 const { MessageAttachment } = require('discord.js');
 const config = require('../../config.json');
-const { formatDiscordMessage, includesIgnored, isGuildEvent, isShortGuildEvent, sleep, nameToUUID, addCommas } = require('../../helper/functions.js');
+const { formatDiscordMessage, includesIgnored, isGuildEvent, isShortGuildEvent, sleep, nameToUUID, addCommas, determineEvent } = require('../../helper/functions.js');
 const generateMessageImage = require('../../helper/messageToImage.js');
 const { getRequirements, getRequirementEmbed } = require('../../helper/requirements.js');
 
@@ -145,6 +145,32 @@ module.exports = {
                 await bridgeChannel.send({
                     files: [new MessageAttachment(generateMessageImage(formattedMessage), 'guildEvent.png')],
                 });
+            }
+            if (config.webhook.enabled) {
+                const event = determineEvent(msgString);
+                if (Object.keys(config.webhook.events).includes(event)) {
+                    if (config.webhook.events[event]) {
+                        let payload = {
+                            'player': msgString.split(' ')[0].includes("MVP") || msgString.split(' ')[0].includes("VIP") ? msgString.split(' ')[1] : msgString.split(' ')[0],
+                        }
+                        switch (event) {
+                            case 'guildPromote':
+                                payload['rank'] = msgString.split(' ')[msgString.split(' ').length - 1];
+                                break;
+                            case 'guildDemote':
+                                payload['rank'] = msgString.split(' ')[msgString.split(' ').length - 1];
+                                break;
+                            case 'guildMute':
+                                payload['player'] = msgString.split(' ')[msgString.split(' ').length - 3]
+                                payload['duration'] = msgString.split(' ')[msgString.split(' ').length - 1];
+                                break;
+                            case 'guildUnmute':
+                                payload['player'] = msgString.split(' ')[msgString.split(' ').length - 1];
+                                break;
+                        }
+                        await axios.post(config.webhook.url, {event, payload}, {headers: {'Authorization': config.webhook.auth}});
+                    }
+                }
             }
         }
         if (config.options.discordUseSlowCommand) {
