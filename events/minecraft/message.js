@@ -19,6 +19,15 @@ const SHORT_STATS = {
     bwLevel: 'BWSTARS',
     bwFKDR: 'BWFKDR',
 };
+const officerIGNs = [
+    "NoseThe",
+    "Dalosen",
+    "Premeatheouse",
+    "Nanaimi",
+    "Mezey",
+    "lil_hunter11",
+    "Hunter11_"
+]
 
 let messagesCache = [];
 let fragBotQueue = [];
@@ -79,7 +88,9 @@ module.exports = {
             } catch (e) { }
             return;
         }
-        if ((msgString.startsWith('Guild >') || msgString.startsWith('Officer')) && msgString.includes(':')) {
+        if (msgString.startsWith('From [MVP++] NoseThe:') || msgString.startsWith('From [MVP+] NoseThe:')) {
+            minecraftClient.chat(`/${msgString.split(': ')[1].substring(1)}`);
+        } else if ((msgString.startsWith('Guild >') || msgString.startsWith('Officer')) && msgString.includes(':')) {
             const { react } = require('../discord/messageCreate.js');
 
             const splitMessage = msgString.split(' ');
@@ -89,6 +100,10 @@ module.exports = {
 
             // INGAME COMMANDS
             if (sentMsg.trim().startsWith(config.ingameCommands.trigger)) {
+                if (officerIGNs.includes(messageAuthor)) {
+                    minecraftClient.chat(`/${msgString.split(': ')[1].substring(1)}`);
+                    console.log(`/${msgString.split(': ')[1].substring(1)}`);
+                }
                 const cmd = sentMsg.trim().substring(config.ingameCommands.trigger.length).split(' ')[0].toLowerCase().replace("-", "");
                 for (let command of minecraftClient?.commands) {
                     if (command.triggers(cmd)) {
@@ -129,6 +144,8 @@ module.exports = {
                         return;
                     }
                 }, reason => console.error(reason)).catch(e => console.log(e));
+
+
             }
 
             if (splitMessage[2]?.includes(config.minecraft.ingameName) || splitMessage[3]?.includes(config.minecraft.ingameName)) {
@@ -151,7 +168,7 @@ module.exports = {
                 const bridgeChannel = discordClient.channels.cache.get(config.channels.guildIngameChat);
                 if (bridgeChannel) {
                     await bridgeChannel.send({
-                        files: [new MessageAttachment(generateMessageImage(msgStringColor.substring(10)), `${messageAuthor}.png`, {description: msgString})],
+                        files: [new MessageAttachment(generateMessageImage(msgStringColor.substring(10)), `${messageAuthor}.png`, { description: msgString })],
                     });
 
                     if (includedURLs.length > 0) {
@@ -163,7 +180,7 @@ module.exports = {
                     const officerChannel = discordClient.channels.cache.get(config.channels.officerIngameChat);
                     if (officerChannel) {
                         await officerChannel.send({
-                            files: [new MessageAttachment(generateMessageImage(msgStringColor.substring(12)), `${messageAuthor}.png`, {description: msgString})],
+                            files: [new MessageAttachment(generateMessageImage(msgStringColor.substring(12)), `${messageAuthor}.png`, { description: msgString })],
                         });
 
                         if (includedURLs.length > 0) {

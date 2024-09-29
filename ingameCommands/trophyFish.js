@@ -45,7 +45,7 @@ class TrophyFishCommand extends BaseCommand {
         const goldCount = goldSet.size;
         const diamondCount = diamondSet.size;
 
-        const totalTrophyFish = playerProfile?.stats?.items_fished_trophy_fish || 0;
+        const totalTrophyFish = playerProfile?.trophy_fish?.total_caught || 0;
 
         let detailMessage = "";
         if (bronzeCount < 15) {

@@ -3,3 +3,5 @@ config.json
 .prettierrc.json
 /sbConfig.json
 /userdata.json
+/node_modules
+/secrets.txt

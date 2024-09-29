@@ -12,9 +12,9 @@ class FairySoulsCommand extends BaseCommand {
 
         const searchedPlayer = await getPlayer(username, profile);
         const playerProfile = searchedPlayer.memberData;
-        if (!playerProfile?.temp_stat_buffs?.length)
+        if (!playerProfile?.player_data?.temp_stat_buffs?.length)
             return this.sendReply(`${username} has no cake buffs active`);
-        return this.sendReply(`The cake buffs for ${username} expire in ${getTimeString(playerProfile?.temp_stat_buffs[0].expire_at - Date.now())}`)
+        return this.sendReply(`The cake buffs for ${username} expire in ${getTimeString(playerProfile?.player_data?.temp_stat_buffs[0].expire_at - Date.now())}`)
     }
 }
 

@@ -30,6 +30,11 @@ class BaseCommand {
         console.log(message)
         minecraftClient.chat(`/gc @${message}`);
     }
+
+    runCommand(message) {
+        console.log(message)
+        minecraftClient.chat(`/${message}`);
+    }
 }
 
 module.exports = BaseCommand

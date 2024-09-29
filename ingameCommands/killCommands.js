@@ -15,7 +15,7 @@ class KillCommand extends BaseCommand {
         const searchedPlayer = await getPlayer(username, profile);
         const playerProfile = searchedPlayer.memberData;
 
-        const amount = playerProfile?.stats?.[this.key] || 0;
+        const amount = playerProfile?.player_stats?.kills[this.key] || 0;
 
         return this.sendReply(`${username} killed ${addCommas(amount)} ${this.display_name}`);
     }
@@ -28,18 +28,10 @@ module.exports = [
         key: 'kills_minos_inquisitor',
         display_name: 'minos inquisitors'
     }),*/
-    new KillCommand('champions', {
-        key: 'kills_minos_champion',
-        display_name: 'minos champions'
-    }),
-    new KillCommand('diana', {
-        key: 'mythos_kills',
-        display_name: 'mythological creatures'
-    }),
     /*new KillCommand('kills', {
         key: 'kills',
         display_name: 'creatures'
     }),*/
-    new KillCommand('flares', { key: 'kills_flare', }),
-    new KillCommand('vanquishers', { key: 'kills_vanquisher', }),
+    new KillCommand('flares', { key: 'flare', }),
+    new KillCommand('vanquishers', { key: 'vanquisher', }),
 ]

@@ -416,8 +416,8 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             let petxp = 0;
-                            for (let i in player.pets) {
-                                let pet = player.pets[i];
+                            for (let i in player.pets_data.pets) {
+                                let pet = player.pets_data.pets[i];
                                 petxp = petxp + pet.exp;
                             }
                             resolve(`${player.username} has ${dot(petxp)} total pet xp`);
@@ -432,8 +432,8 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             let petcandy = 0;
-                            for (let i in player.pets) {
-                                let pet = player.pets[i];
+                            for (let i in player.pets_data.pets) {
+                                let pet = player.pets_data.pets[i];
                                 petcandy = petcandy + pet.candyUsed;
                             }
                             resolve(
@@ -474,14 +474,15 @@ async function getInfoText(statistic, name_obj, full) {
                                         return 25_353_230;
                                 }
                             }
-                            profile?.pets?.forEach(pet => {
+                            profile?.pets_data?.pets?.forEach(pet => {
                                 let type = pet.type;
                                 let rarity = pet.tier;
-                                if (type === 'JERRY' && pet.heldItem === 'PET_ITEM_TOY_JERRY') rarity = 'MYTHIC';
-                                if (type === 'BAT' && pet.heldItem === 'PET_ITEM_VAMPIRE_FANG') rarity = 'MYTHIC';
+
                                 // comment this in once wisp pet stacking is fixed
                                 //if (type.includes('WISP')) type = 'WISP';
                                 let value = getRarityValue(rarity);
+                                //console.log(pet.heldItem)
+                                if (value < 6 && pet.heldItem === 'PET_ITEM_TIER_BOOST') value += 1;
                                 if (pet.exp >= getMaxXpRequired(rarity)) value++;
                                 if (value > (pets?.[type] || 0))
                                     pets[type] = value;
@@ -526,7 +527,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} mined ${dot(
-                                    player.stats.pet_milestone_ores_mined
+                                    player.player_stats.pets.milestone.ores_mined
                                 )} ores`
                             );
                         })
@@ -541,7 +542,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} killed ${dot(
-                                    player.stats.pet_milestone_sea_creatures_killed
+                                    player.player_stats.pets.milestone.sea_creatures_killed
                                 )} sea creatures`
                             );
                         })
@@ -555,7 +556,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} spent ${dot(
-                                    player.stats.auctions_fees
+                                    player.player_stats.auctions.fees
                                 )} coins on auction fees`
                             );
                         })
@@ -569,7 +570,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} died ${dot(
-                                    player.stats.deaths
+                                    player.player_stats.deaths.total
                                 )} times in total`
                             );
                         })
@@ -583,7 +584,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} killed a total of ${dot(
-                                    player.stats.kills
+                                    player.player_stats.kills.total
                                 )} creatures`
                             );
                         })
@@ -600,7 +601,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} killed ${dot(
-                                    player.stats.mythos_kills
+                                    player.player_stats.mythos.kills
                                 )} mythological creatures`
                             );
                         })
@@ -608,6 +609,7 @@ async function getInfoText(statistic, name_obj, full) {
                             reject(`Could not find ${name}`);
                         });
                 });
+            case "inq":
             case "inquis":
             case "inquisitors":
             case "inquisitorkills":
@@ -617,7 +619,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} killed ${dot(
-                                    player.stats.kills_minos_inquisitor
+                                    player.player_stats.kills.minos_inquisitor
                                 )} minos inquisitors`
                             );
                         })
@@ -634,7 +636,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} killed ${dot(
-                                    player.stats.kills_minos_champion
+                                    player.player_stats.kills.minos_champion
                                 )} minos champions`
                             );
                         })
@@ -652,28 +654,28 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             let inquisDeaths =
-                                "deaths_minos_inquisitor" in player.stats
-                                    ? player.stats.deaths_minos_inquisitor
+                                "minos_inquisitor" in player.player_stats.deaths
+                                    ? player.player_stats.deaths.minos_inquisitor
                                     : 0;
                             let champDeaths =
-                                "deaths_minos_champion" in player.stats
-                                    ? player.stats.deaths_minos_champion
+                                "minos_champion" in player.player_stats.deaths
+                                    ? player.player_stats.deaths.minos_champion
                                     : 0;
                             let gaiaDeaths =
-                                "deaths_gaia_construct" in player.stats
-                                    ? player.stats.deaths_gaia_construct
+                                "gaia_construct" in player.player_stats.deaths
+                                    ? player.player_stats.deaths.gaia_construct
                                     : 0;
                             let hunterDeaths =
-                                "deaths_minos_hunter" in player.stats
-                                    ? player.stats.deaths_minos_hunter
+                                "minos_hunter" in player.player_stats.deaths
+                                    ? player.player_stats.deaths.minos_hunter
                                     : 0;
                             let catDeaths =
-                                "deaths_siamese_lynx" in player.stats
-                                    ? player.stats.deaths_siamese_lynx
+                                "siamese_lynx" in player.player_stats.deaths
+                                    ? player.player_stats.deaths.siamese_lynx
                                     : 0;
                             let minotaurDeaths =
-                                "deaths_minotaur" in player.stats
-                                    ? player.stats.deaths_minotaur
+                                "minotaur" in player.player_stats.deaths
+                                    ? player.player_stats.deaths.minotaur
                                     : 0;
                             let dianaDeaths =
                                 inquisDeaths +
@@ -684,31 +686,31 @@ async function getInfoText(statistic, name_obj, full) {
                                 minotaurDeaths;
 
                             let inquisKills =
-                                "kills_minos_inquisitor" in player.stats
-                                    ? player.stats.kills_minos_inquisitor
+                                "minos_inquisitor" in player.player_stats.kills
+                                    ? player.player_stats.kills.minos_inquisitor
                                     : 0;
                             let champKills =
-                                "kills_minos_champion" in player.stats
-                                    ? player.stats.kills_minos_champion
+                                "minos_champion" in player.player_stats.kills
+                                    ? player.player_stats.kills.minos_champion
                                     : 0;
                             let gaiaKills =
-                                "kills_gaia_construct" in player.stats
-                                    ? player.stats.kills_gaia_construct
+                                "gaia_construct" in player.player_stats.kills
+                                    ? player.player_stats.kills.gaia_construct
                                     : 0;
                             let hunterKills =
-                                "kills_minos_hunter" in player.stats
-                                    ? player.stats.kills_minos_hunter
+                                "minos_hunter" in player.player_stats.kills
+                                    ? player.player_stats.kills.minos_hunter
                                     : 0;
                             let catKills =
-                                "kills_siamese_lynx" in player.stats
-                                    ? player.stats.kills_siamese_lynx
+                                "siamese_lynx" in player.player_stats.kills
+                                    ? player.player_stats.kills.siamese_lynx
                                     : 0;
                             let minotaurKills =
-                                "kills_minotaur" in player.stats
-                                    ? player.stats.kills_minotaur
+                                "minotaur" in player.player_stats.kills
+                                    ? player.player_stats.kills.minotaur
                                     : 0;
                             let dianaKills =
-                                "mythos_kills" in player.stats ? player.stats.mythos_kills : 0;
+                                "kills" in player.player_stats.mythos ? player.player_stats.mythos.kills : 0;
                             if (dianaKills == 0 && dianaDeaths == 0) {
                                 resolve(`${player.username} never played a mythological event`);
                             } else if (dianaKills == 0) {
@@ -805,6 +807,7 @@ async function getInfoText(statistic, name_obj, full) {
             case "berserkerxp":
             case "berserker":
             case "berserk":
+            case "bers":
                 return new Promise(function (resolve, reject) {
                     getPlayerHypixel(name)
                         .then((player) => {
@@ -820,6 +823,7 @@ async function getInfoText(statistic, name_obj, full) {
                             reject(`Could not find ${name} `);
                         });
                 });
+            case "nosethe":
             case "magexp":
             case "mage":
                 return new Promise(function (resolve, reject) {
@@ -856,18 +860,21 @@ async function getInfoText(statistic, name_obj, full) {
                 });
             case "secrets":
                 return new Promise(function (resolve, reject) {
-                    getPlayerStatsHypixel(name)
-                        .then((player) => {
+                    getPlayerHypixel(name)
+                        .then(async (player) => {
+                            let p2 = await getPlayerStatsHypixel(name);
+
                             resolve(
-                                `${player.playername} found ${dot(
-                                    parseInt(player.achievements.skyblock_treasure_hunter)
+                                `${player.username} found ${dot(
+                                    p2.achievements.skyblock_treasure_hunter
                                 )} secrets`
                             );
                         })
                         .catch((e) => {
-                            reject(`Could not find ${name} `);
+                            console.log(e);
+                            reject(`Could not find ${name}`);
                         });
-                });
+                })
             case "catawe":
             case "catacombsweight":
             case "dungwe":
@@ -892,7 +899,7 @@ async function getInfoText(statistic, name_obj, full) {
             case "purse":
                 return new Promise(function (resolve, reject) {
                     getPlayerHypixelFullProfile(name).then((profile) => {
-                        let purse = profile?.members[profile.uuid]?.coin_purse ?? 0;
+                        let purse = profile?.members[profile.uuid]?.currencies?.coin_purse ?? 0;
                         let bank = profile?.banking?.balance;
                         resolve(`${profile.username} has ${space(purse + (bank ?? 0))
                             } coins ` + (bank ? `(${space(parseInt(purse))} purse / ${space(parseInt(bank))} bank)` : `in their purse`)
@@ -906,7 +913,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} found ${dot(
-                                    parseInt(player?.fairy_souls_collected)
+                                    parseInt(player?.fairy_soul.total_collected)
                                 )
                                 } fairy souls`
                             );
@@ -915,6 +922,7 @@ async function getInfoText(statistic, name_obj, full) {
                             reject(`Could not find ${name} `);
                         });
                 });
+            case "slay":
             case "slayer":
             case "slayers":
                 return new Promise(function (resolve, reject) {
@@ -922,26 +930,26 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} has slayer lvls ${getSlayerLvl(
-                                    player.slayer_bosses.zombie.xp
+                                    player.slayer.slayer_bosses.zombie.xp
                                 )
-                                }${getSlayerLvl(player.slayer_bosses.spider.xp)}` +
-                                `${getSlayerLvl(player.slayer_bosses.wolf.xp)} ${"enderman" in player.slayer_bosses
-                                    ? getSlayerLvl(player.slayer_bosses.enderman.xp)
+                                }${getSlayerLvl(player.slayer.slayer_bosses.spider.xp)}` +
+                                `${getSlayerLvl(player.slayer.slayer_bosses.wolf.xp)} ${"enderman" in player.slayer.slayer_bosses
+                                    ? getSlayerLvl(player.slayer.slayer_bosses.enderman.xp)
                                     : 0
-                                }${"blaze" in player.slayer_bosses
-                                    ? getSlayerLvl(player.slayer_bosses.blaze.xp)
+                                }${"blaze" in player.slayer.slayer_bosses
+                                    ? getSlayerLvl(player.slayer.slayer_bosses.blaze.xp)
                                     : 0
                                 } and ${dot(
-                                    player.slayer_bosses.zombie.xp +
-                                    player.slayer_bosses.spider.xp +
-                                    player.slayer_bosses.wolf.xp +
-                                    ("enderman" in player.slayer_bosses &&
-                                        "xp" in player.slayer_bosses.enderman
-                                        ? player.slayer_bosses.enderman.xp
+                                    player.slayer.slayer_bosses.zombie.xp +
+                                    player.slayer.slayer_bosses.spider.xp +
+                                    player.slayer.slayer_bosses.wolf.xp +
+                                    ("enderman" in player.slayer.slayer_bosses &&
+                                        "xp" in player.slayer.slayer_bosses.enderman
+                                        ? player.slayer.slayer_bosses.enderman.xp
                                         : 0) +
-                                    ("blaze" in player.slayer_bosses &&
-                                        "xp" in player.slayer_bosses.blaze
-                                        ? player.slayer_bosses.blaze.xp
+                                    ("blaze" in player.slayer.slayer_bosses &&
+                                        "xp" in player.slayer.slayer_bosses.blaze
+                                        ? player.slayer.slayer_bosses.blaze.xp
                                         : 0)
                                 )
                                 } total slayer xp`
@@ -961,13 +969,12 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} is zombie slayer ${getSlayerLvl(
-                                    player.slayer_bosses.zombie.xp
-                                )} with ${dot(player.slayer_bosses.zombie.xp)} xp`
+                                    player.slayer.slayer_bosses.zombie.xp
+                                )} with ${dot(player.slayer.slayer_bosses.zombie.xp)} xp`
                             );
                         })
                         .catch((e) => {
-                            console.log(e);
-                            reject(`Could not find ${name} `);
+                            console.log(e), reject(`Could not find ${name} `);
                         });
                 });
             case "tara":
@@ -980,8 +987,8 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} is spider slayer ${getSlayerLvl(
-                                    player.slayer_bosses.spider.xp
-                                )} with ${dot(player.slayer_bosses.spider.xp)} xp`
+                                    player.slayer.slayer_bosses.spider.xp
+                                )} with ${dot(player.slayer.slayer_bosses.spider.xp)} xp`
                             );
                         })
                         .catch((e) => {
@@ -998,8 +1005,8 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} is wolf slayer ${getSlayerLvl(
-                                    player.slayer_bosses.wolf.xp
-                                )} with ${dot(player.slayer_bosses.wolf.xp)} xp`
+                                    player.slayer.slayer_bosses.wolf.xp
+                                )} with ${dot(player.slayer.slayer_bosses.wolf.xp)} xp`
                             );
                         })
                         .catch((e) => {
@@ -1018,9 +1025,25 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} is enderman slayer ${getSlayerLvl(
-                                    player.slayer_bosses.enderman.xp
+                                    player.slayer.slayer_bosses.enderman.xp
                                 )
-                                } with ${dot(player.slayer_bosses.enderman.xp)} xp`
+                                } with ${dot(player.slayer.slayer_bosses.enderman.xp)} xp`
+                            );
+                        })
+                        .catch((e) => {
+                            console.log(e);
+                            reject(`Could not find ${name} `);
+                        });
+                });
+            case "blaze":
+                return new Promise(function (resolve, reject) {
+                    getPlayerHypixel(name)
+                        .then((player) => {
+                            resolve(
+                                `${player.username} is blaze slayer ${getSlayerLvl(
+                                    player.slayer.slayer_bosses.blaze.xp
+                                )
+                                } with ${dot(player.slayer.slayer_bosses.blaze.xp)} xp`
                             );
                         })
                         .catch((e) => {
@@ -1067,6 +1090,7 @@ async function getInfoText(statistic, name_obj, full) {
                         });
                 });
             case "uncsa":
+            case "ucsa":
             case "uncappedsa":
                 return new Promise(function (resolve, reject) {
                     getPlayerHypixel(name)
@@ -1091,12 +1115,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is combat ${parseFloat(findSkillLevel(player?.experience_skill_combat)
+                                `${player.username} is combat ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_COMBAT)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_combat, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_COMBAT, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_combat ?? 0
+                                    player?.player_data.experience.SKILL_COMBAT ?? 0
                                 )
                                 } combat xp`
                             );
@@ -1111,12 +1135,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is mining ${parseFloat(findSkillLevel(player?.experience_skill_mining)
+                                `${player.username} is mining ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_MINING)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_mining, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_MINING, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_mining ?? 0
+                                    player?.player_data.experience.SKILL_MINING ?? 0
                                 )
                                 } mining xp`
                             );
@@ -1131,12 +1155,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is foraging ${parseFloat(findSkillLevel(player?.experience_skill_foraging, true)
+                                `${player.username} is foraging ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_FORAGING, true)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_foraging, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_FORAGING, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_foraging ?? 0
+                                    player?.player_data.experience.SKILL_FORAGING ?? 0
                                 )
                                 } foraging xp`
                             );
@@ -1151,12 +1175,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is enchanting ${parseFloat(findSkillLevel(player?.experience_skill_enchanting)
+                                `${player.username} is enchanting ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_ENCHANTING)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_enchanting, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_ENCHANTING, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_enchanting ?? 0
+                                    player?.player_data.experience.SKILL_ENCHANTING ?? 0
                                 )
                                 } enchanting xp`
                             );
@@ -1171,12 +1195,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is fishing ${parseFloat(findSkillLevel(player?.experience_skill_fishing, true)
+                                `${player.username} is fishing ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_FISHING, true)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_fishing, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_FISHING, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_fishing ?? 0
+                                    player?.player_data.experience.SKILL_FISHING ?? 0
                                 )
                                 } fishing xp`
                             );
@@ -1191,12 +1215,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is farming ${parseFloat(findSkillLevel(player?.experience_skill_farming)
+                                `${player.username} is farming ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_FARMING)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_farming, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_FARMING, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_farming ?? 0
+                                    player?.player_data.experience.SKILL_FARMING ?? 0
                                 )
                                 } farming xp`
                             );
@@ -1211,12 +1235,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is alchemy ${parseFloat(findSkillLevel(player?.experience_skill_alchemy, true)
+                                `${player.username} is alchemy ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_ALCHEMY, true)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_alchemy, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_ALCHEMY, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_alchemy ?? 0
+                                    player?.player_data.experience.SKILL_ALCHEMY ?? 0
                                 )
                                 } alchemy xp`
                             );
@@ -1231,12 +1255,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is taming ${parseFloat(findSkillLevel(player?.experience_skill_taming, true)
+                                `${player.username} is taming ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_TAMING, true)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_taming, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_TAMING, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_taming ?? 0
+                                    player?.player_data.experience.SKILL_TAMING ?? 0
                                 )
                                 } taming xp`
                             );
@@ -1252,12 +1276,12 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is carpentry ${parseFloat(findSkillLevel(player?.experience_skill_carpentry, true)
+                                `${player.username} is carpentry ${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_CARPENTRY, true)
                                 ).toFixed(2)
-                                } (${parseFloat(findSkillLevel(player?.experience_skill_carpentry, false, true)
+                                } (${parseFloat(findSkillLevel(player?.player_data.experience.SKILL_CARPENTRY, false, true)
                                 ).toFixed(2)
                                 }) with ${dot(
-                                    player?.experience_skill_carpentry ?? 0
+                                    player?.player_data.experience.SKILL_CARPENTRY ?? 0
                                 )
                                 } carpentry xp`
                             );
@@ -1272,10 +1296,10 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
-                                `${player.username} is runecrafting ${parseFloat(findRunecraftingLevel(player?.experience_skill_runecrafting)
+                                `${player.username} is runecrafting ${parseFloat(findRunecraftingLevel(player?.player_data.experience.SKILL_RUNECRAFTING)
                                 ).toFixed(2)
                                 } with ${dot(
-                                    player?.experience_skill_runecrafting ?? 0
+                                    player?.player_data.experience.SKILL_RUNECRAFTING ?? 0
                                 )
                                 } runecrafting xp`
                             );
@@ -1291,18 +1315,18 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} has ${dot(
-                                    (player.experience_skill_alchemy ?? 0) +
-                                    (player.experience_skill_taming ?? 0) +
-                                    (player.experience_skill_combat ?? 0) +
-                                    (player.experience_skill_enchanting ?? 0) +
-                                    (player.experience_skill_fishing ?? 0) +
-                                    (player.experience_skill_foraging ?? 0) +
-                                    (player.experience_skill_farming ?? 0) +
-                                    (player.experience_skill_mining ?? 0)
+                                    (player.player_data.experience.SKILL_ALCHEMY ?? 0) +
+                                    (player.player_data.experience.SKILL_TAMING ?? 0) +
+                                    (player.player_data.experience.SKILL_COMBAT ?? 0) +
+                                    (player.player_data.experience.SKILL_ENCHANTING ?? 0) +
+                                    (player.player_data.experience.SKILL_FISHING ?? 0) +
+                                    (player.player_data.experience.SKILL_FORAGING ?? 0) +
+                                    (player.player_data.experience.SKILL_FARMING ?? 0) +
+                                    (player.player_data.experience.SKILL_MINING ?? 0) +
+                                    (player.player_data.experience.SKILL_CARPENTRY ?? 0)
                                 )
-                                } total skill xp(+${dot(
-                                    (player.experience_skill_carpentry ?? 0) +
-                                    (player.experience_skill_runecrafting ?? 0))
+                                } total skill xp (+${dot(
+                                    (player.player_data.experience.SKILL_RUNECRAFTING ?? 0))
                                 } cosmetic skill xp)`
                             );
                         })
@@ -1327,6 +1351,8 @@ async function getInfoText(statistic, name_obj, full) {
                             reject(`Could not find ${name} `);
                         });
                 });
+            case "fiske":
+            case "fiskefillet":
             case "we":
             case "weight":
                 return new Promise(function (resolve, reject) {
@@ -1490,6 +1516,7 @@ async function getInfoText(statistic, name_obj, full) {
                                                 "is spam dropping their spirit bow in a hub",
                                                 "is three-hitting revenant horrors in the hub",
                                                 "is trying to find the carpenter in the hub",
+                                                "is wasting their time doing diana"
                                             ])
                                             } `
                                         );
@@ -1645,13 +1672,12 @@ async function getInfoText(statistic, name_obj, full) {
                                             `${player.username} ${getRandomElement([
                                                 "is duping secrets in a dungeon",
                                                 "is haeling a bunch of terminals",
-                                                "is using chest aura to clear the dungeon faster",
-                                                "is prefiring in stage two of the Necron boss",
+                                                "is using secret aura to clear the dungeon faster",
+                                                "is inv walking terminals",
                                                 "is sneaking over the deathmite pit, telling their team to leap",
                                                 "is autoclicking simon says",
-                                                "is testing their bone macro in dungeons",
                                                 "is trying to transfer items to ironman in dungeons",
-                                                "is working on their sub 4 pb with the help of freecam",
+                                                "is working on their sub 5 pb with the help of freecam",
                                                 "is trying to figure out why one of the livids is yellow",
                                                 "is getting 1 handle every 2384 runs",
                                                 "is rerolling their handle",
@@ -1663,6 +1689,7 @@ async function getInfoText(statistic, name_obj, full) {
                                                 "is knocking their team off the platform as a ghost",
                                                 "is shadow furying into the deathmite pit",
                                                 "is killing their tank on purpose by jumping into the deep hole",
+                                                "is trying to do trap but they dont know the new route",
                                             ])
                                             } `
                                         );
@@ -1697,8 +1724,48 @@ async function getInfoText(statistic, name_obj, full) {
                                             } `
                                         );
                                         break;
+                                    case "garden":
+                                        resolve(
+                                            `${player.username} ${getRandomElement([
+                                                "is macroing on their garden",
+                                                "is thinking of the most effective way to delete nerds",
+                                                "is strangling their pests",
+                                                "is trying to find where the earthworm went",
+                                                "is stacking flies for the wheat contest",
+                                            ])
+                                            } `
+                                        );
+                                        break;
+                                    case "crimson_isle":
+                                        resolve(
+                                            `${player.username} ${getRandomElement([
+                                                "is trying to fish a plhlegblast",
+                                                "is trying the new blaze one tap",
+                                                "is preping to be eaten by kuudra",
+                                                "is chasing bats for beastiary",
+                                                "is watching thirtyvirus say 'pc shut the fuck up'",
+                                                "is dying to matriarch",
+                                                "is mining sulphur blocks with a gemstone gauntlet",
+                                                "is jumping into the erupting volcano"
+                                            ])
+                                            } `
+                                        );
+                                        break;
+                                    case "rift":
+                                            resolve(
+                                                `${player.username} ${getRandomElement([
+                                                    "is trying to drop a celadon dye",
+                                                    "is trying to figure out the mirriorverse",
+                                                    "is getting jailed by vampire",
+                                                    "is missing twinclaw timing on t2 vamp"
+                                                ])
+                                                } `
+                                            );
+                                            break;
                                     default: {
+                                        console.log(player.session.mode)
                                         resolve(`${player.username} is playing skyblock`);
+                                        
                                     }
                                 }
                             } else
@@ -2150,7 +2217,7 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             resolve(
                                 `${player.username} killed ${dot(
-                                    player.stats.kills_yeti
+                                    player.player_stats.kills.yeti
                                 )} yetis`
                             );
                         })
@@ -2245,11 +2312,11 @@ async function getInfoText(statistic, name_obj, full) {
                         .then((player) => {
                             let watcher_kills = 0;
                             let master_watcher_kills = 0;
-                            if ("kills_watcher_summon_undead" in player.stats)
-                                watcher_kills = player.stats.kills_watcher_summon_undead;
-                            if ("kills_master_watcher_summon_undead" in player.stats)
+                            if ("watcher_summon_undead" in player.player_stats.kills)
+                                watcher_kills = player.player_stats.kills.watcher_summon_undead;
+                            if ("master_watcher_summon_undead" in player.player_stats.kills)
                                 master_watcher_kills =
-                                    player.stats.kills_master_watcher_summon_undead;
+                                    player.player_stats.kills.master_watcher_summon_undead;
                             let total_kills = watcher_kills + master_watcher_kills;
                             resolve(
                                 `${player.username} killed ${dot(total_kills)} blood mobs` +
@@ -2283,7 +2350,7 @@ async function getInfoText(statistic, name_obj, full) {
                                 )} gemstone powder, and ${dot(
                                     player.mining_core.powder_glacite +
                                     player.mining_core.powder_spent_glacite
-                                    )} glacite powder.`.replace(/NaN/g, "0")
+                                )} glacite powder.`.replace(/NaN/g, "0")
                             );
                         })
                         .catch((e) => {
@@ -2324,6 +2391,7 @@ async function getInfoText(statistic, name_obj, full) {
                 });
 
             case "nucleus":
+            case "nuc":
             case "nucleusruns":
                 return new Promise(function (resolve, reject) {
                     getPlayerHypixel(name)
@@ -2360,33 +2428,17 @@ async function getInfoText(statistic, name_obj, full) {
                             reject(`${name} did not enable inventory API`);
                         });
                 });
-            case "blaze":
-            case "blazexp":
-            case "inferno":
-                return new Promise(function (resolve, reject) {
-                    getPlayerHypixel(name)
-                        .then((player) => {
-                            resolve(
-                                `${player.username} is blaze slayer ${getSlayerLvl(
-                                    player.slayer_bosses.blaze.xp
-                                )} with ${dot(player.slayer_bosses.blaze.xp)} xp`
-                            );
-                        })
-                        .catch((e) => {
-                            console.log(e);
-                            reject(`Could not find ${name} `);
-                        });
-                });
-
             case "ghost":
             case "ghosts":
             case "ghostkills":
+            case "dalosen":
+            case "dalo":
                 return new Promise(function (resolve, reject) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             resolve(
                                 `${player.username} killed ${dot(
-                                    player.stats.kills_caverns_ghost
+                                    player.player_stats.kills.caverns_ghost
                                 )} ghosts`
                             );
                         })
@@ -2861,7 +2913,7 @@ async function getInfoText(statistic, name_obj, full) {
                 return new Promise(function (resolve, reject) {
                     getPlayerHypixel(name)
                         .then((player) => {
-                            let soulflow = player?.soulflow ?? 0;
+                            let soulflow = player?.item_data?.soulflow ?? 0;
 
                             resolve(
                                 `${player.username} has ${dot(soulflow)} soulflow available`
@@ -2895,13 +2947,13 @@ async function getInfoText(statistic, name_obj, full) {
                     getPlayerHypixel(name)
                         .then((player) => {
                             let dragons = player?.stats?.kills_superior_dragon ?? 0;
-                            dragons += player?.stats?.kills_protector_dragon ?? 0;
-                            dragons += player?.stats?.kills_unstable_dragon ?? 0;
-                            dragons += player?.stats?.kills_old_dragon ?? 0;
-                            dragons += player?.stats?.kills_strong_dragon ?? 0;
-                            dragons += player?.stats?.kills_young_dragon ?? 0;
-                            dragons += player?.stats?.kills_wise_dragon ?? 0;
-                            let superior = player?.stats?.kills_superior_dragon ?? 0;
+                            dragons += player?.player_stats?.kills?.protector_dragon ?? 0;
+                            dragons += player?.player_stats?.kills?.unstable_dragon ?? 0;
+                            dragons += player?.player_stats?.kills?.old_dragon ?? 0;
+                            dragons += player?.player_stats?.kills?.strong_dragon ?? 0;
+                            dragons += player?.player_stats?.kills?.young_dragon ?? 0;
+                            dragons += player?.player_stats?.kills?.wise_dragon ?? 0;
+                            let superior = player?.player_stats?.kills?.superior_dragon ?? 0;
 
                             resolve(`${player.username} fought ${dot(dragons)} dragons, ${superior} of those being superior dragons ` + (dragons ? '(' + shortenDot(100 * superior / dragons) + '%)' : '')
                             );
@@ -2935,7 +2987,7 @@ async function getInfoText(statistic, name_obj, full) {
                 return new Promise(function (resolve, reject) {
                     getPlayerHypixel(name)
                         .then((player) => {
-                            let pelts = player?.trapper_quest?.pelt_count ?? 0;
+                            let pelts = player?.quests?.trapper_quest?.pelt_count ?? 0;
                             let response = `${player.username} has ${pelts} pelts.`
                             resolve(response);
                         })
@@ -3342,29 +3394,31 @@ async function getPlayerUUID(name) {
 }
 
 function findSA60(player, uncapped) {
-    let mining = findSkillLevel(player?.experience_skill_mining, false, uncapped);
-    let fishing = findSkillLevel(player?.experience_skill_fishing, false, uncapped);
-    let farming = findSkillLevel(player?.experience_skill_farming, false, uncapped);
-    let taming = findSkillLevel(player?.experience_skill_taming, false, uncapped);
-    let foraging = findSkillLevel(player?.experience_skill_foraging, false, uncapped);
-    let enchanting = findSkillLevel(player?.experience_skill_enchanting, false, uncapped);
-    let alchemy = findSkillLevel(player?.experience_skill_alchemy, false, uncapped);
-    let combat = findSkillLevel(player?.experience_skill_combat, false, uncapped);
-    let skillSum = mining + fishing + farming + taming + foraging + enchanting + alchemy + combat;
-    return skillSum / 8;
+    let mining = findSkillLevel(player?.player_data.experience.SKILL_MINING, false, uncapped);
+    let fishing = findSkillLevel(player?.player_data.experience.SKILL_FISHING, false, uncapped);
+    let farming = findSkillLevel(player?.player_data.experience.SKILL_FARMING, false, uncapped);
+    let taming = findSkillLevel(player?.player_data.experience.SKILL_TAMING, false, uncapped);
+    let foraging = findSkillLevel(player?.player_data.experience.SKILL_FORAGING, false, uncapped);
+    let enchanting = findSkillLevel(player?.player_data.experience.SKILL_ENCHANTING, false, uncapped);
+    let alchemy = findSkillLevel(player?.player_data.experience.SKILL_ALCHEMY, false, uncapped);
+    let combat = findSkillLevel(player?.player_data.experience.SKILL_COMBAT, false, uncapped);
+    let carpentry = findSkillLevel(player?.player_data.experience.SKILL_CARPENTRY, false, uncapped);
+    let skillSum = mining + fishing + farming + taming + foraging + enchanting + alchemy + combat + carpentry;
+    return skillSum / 9;
 }
 
 function findSA(player) {
-    let mining = findSkillLevel(player?.experience_skill_mining);
-    let fishing = Math.min(50, findSkillLevel(player?.experience_skill_fishing));
-    let farming = findSkillLevel(player?.experience_skill_farming);
-    let taming = Math.min(50, findSkillLevel(player?.experience_skill_taming));
-    let foraging = Math.min(50, findSkillLevel(player?.experience_skill_foraging));
-    let enchanting = findSkillLevel(player?.experience_skill_enchanting);
-    let alchemy = Math.min(50, findSkillLevel(player?.experience_skill_alchemy));
-    let combat = findSkillLevel(player?.experience_skill_combat);
-    let skillSum = mining + fishing + farming + taming + foraging + enchanting + alchemy + combat;
-    return skillSum / 8;
+    let mining = findSkillLevel(player?.player_data.experience.SKILL_MINING);
+    let fishing = Math.min(50, findSkillLevel(player?.player_data.experience.SKILL_FISHING));
+    let farming = findSkillLevel(player?.player_data.experience.SKILL_FARMING);
+    let taming = findSkillLevel(player?.player_data.experience.SKILL_TAMING);
+    let foraging = Math.min(50, findSkillLevel(player?.player_data.experience.SKILL_FORAGING));
+    let enchanting = findSkillLevel(player?.player_data.experience.SKILL_ENCHANTING);
+    let alchemy = Math.min(50, findSkillLevel(player?.player_data.experience.SKILL_ALCHEMY));
+    let combat = findSkillLevel(player?.player_data.experience.SKILL_COMBAT);
+    let carpentry = Math.min(50, findSkillLevel(player?.player_data.experience.SKILL_CARPENTRY));
+    let skillSum = mining + fishing + farming + taming + foraging + enchanting + alchemy + combat + carpentry;
+    return skillSum / 9;
 }
 
 function findSkillLevel(xp, capAt50 = false, uncapped = false) {
@@ -3576,7 +3630,7 @@ async function getPlayerHypixel(name) {
     let uuid = uuidInfo.uuid;
 
     response = await getJsonFromUrl(
-        `https://api.hypixel.net/skyblock/profiles?uuid=${uuid}&key=${apiKey}`
+        `https://api.hypixel.net/v2/skyblock/profiles?uuid=${uuid}&key=${apiKey}`
     );
 
     if (
@@ -3605,7 +3659,7 @@ async function getPlayerHypixelFullProfile(name) {
     let uuid = uuidInfo.uuid;
 
     response = await getJsonFromUrl(
-        `https://api.hypixel.net/skyblock/profiles?uuid=${uuid}&key=${apiKey}`
+        `https://api.hypixel.net/v2/skyblock/profiles?uuid=${uuid}&key=${apiKey}`
     );
 
     if (

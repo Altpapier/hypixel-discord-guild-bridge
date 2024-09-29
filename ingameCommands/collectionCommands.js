@@ -40,4 +40,6 @@ module.exports = [
     new CollectionCommand('sugarcane', 'SUGAR_CANE', { name: 'sugar cane', coop: true }),
     new CollectionCommand('netherwarts', 'NETHER_STALK', { name: 'nether warts', coop: true }),
     new CollectionCommand('mithril', 'MITHRIL_ORE', { name: 'mithril', coop: true }),
+    new CollectionCommand('umber', 'UMBER', { name: 'umber', coop: true }),
+    new CollectionCommand('tungsten', 'TUNGSTEN', { name: 'tungsten', coop: true }),
 ];

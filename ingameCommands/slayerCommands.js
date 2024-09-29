@@ -14,7 +14,7 @@ class SlayerCommand extends BaseCommand {
         const searchedPlayer = await getPlayer(username, profile)
         const playerProfile = searchedPlayer.memberData;
 
-        const xp = playerProfile?.slayer_bosses?.[this.name]?.xp || 0;
+        const xp = playerProfile?.slayer?.slayer_bosses?.[this.name]?.xp || 0;
 
         const level = getSlayerLevel(xp);
         return this.sendReply(`${username} is ${this.name} slayer ${level} with ${addCommas(xp.toFixed())} xp`)

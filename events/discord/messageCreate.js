@@ -5,11 +5,35 @@ const fs = require('fs');
 const { getInfoText, getLeaderboard } = require('../../StatChecker.js');
 
 const webhooks = [
-    "1225614446509035581"
+    "1196140442190876803"
+]
+const otherBridge = [
+   "1196140442190876803"
+]
+const officerDiscords = [ // User Ids
+    "324261366854713348", // NoseThe
+    "365168274864078851", // Dalosen
+    "447264623230713898", // Premeatheouse
+    "577462483682590740", // Nanaimi
+    "243002023375667200", // Mezey
+    "424923885402587137", // Hunter
+    "547135400418738190", // Poison
+    "286541220287741952" // Gian
 ]
 
 module.exports = {
     execute: async (discordClient, message) => {
+        if (otherBridge.includes(message.author.id)) {
+            let splitMessage = message.attachments.first().description.split(' ') ?? ''
+            let index = message.attachments.first().description.indexOf(':') ?? 0
+            let sentMsg = message.attachments.first().description.substring(index + 2) ?? ''
+            let messageAuthor = splitMessage[2]?.includes('[') ? splitMessage[3]?.replace(':', '') : splitMessage[2]?.replace(':', '');
+            //let authorRank = splitMessage[2]?.includes('[') ? splitMessage[4]?.replace(':', '') : splitMessage[3]?.replace(':', '');
+            //console.log(`/gc ${JSON.stringify(JSON.stringify(message.attachments.first()))}`)
+            minecraftClient.chat(`/gc ${messageAuthor}: ${sentMsg}`)
+            return
+        }
+
         if ((message.author.bot && !webhooks.includes(message.author.id)) || message.content === '') return;
 
 
@@ -76,9 +100,18 @@ module.exports = {
                 }, 1000 * 3);
             }
 
-            minecraftClient.chat(msg);
+            
 
-            if (message.content.trim().startsWith(config.ingameCommands.trigger)) {
+            //console.log(message.member.id)
+            if (officerDiscords.includes(message.member.id) && message.content.trim().startsWith(config.ingameCommands.trigger)){
+                minecraftClient.chat(`/${message.content.substring(1)}`);
+                console.log(`/${message.content.substring(1)}`);
+            }
+
+            minecraftClient.chat(msg); // Send bridge message in game
+
+            // Commands
+            /*if (message.content.trim().startsWith(config.ingameCommands.trigger)) {
                 const cmd = message.content.trim().substring(config.ingameCommands.trigger.length).split(' ')[0].toLowerCase().replace("-", "");
                 for (let command of minecraftClient?.commands) {
                     if (command.triggers(cmd)) {
@@ -89,8 +122,9 @@ module.exports = {
                         break;
                     }
                 }
-            }
+            }*/
 
+            // Old commands
             let parts = message.content.toLowerCase().split(' ')
 
             if (parts.length < 1)

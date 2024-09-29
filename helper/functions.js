@@ -34,7 +34,7 @@ async function getPlayer(player, profile) {
     const mojangResponse = await nameToUUID(player);
     if (!mojangResponse) throw new Error('Player not found');
 
-    const hypixelResponse = await hypixelRequest(`https://api.hypixel.net/skyblock/profiles?uuid=${mojangResponse}`, true);
+    const hypixelResponse = await hypixelRequest(`https://api.hypixel.net/v2/skyblock/profiles?uuid=${mojangResponse}`, true);
     if (!hypixelResponse) throw new Error("Couldn't get a response from the API");
     if (hypixelResponse.profiles === null) throw new Error(`Couldn\'t find any Skyblock profile that belongs to ${player}`);
 
