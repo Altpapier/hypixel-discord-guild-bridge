@@ -78,6 +78,20 @@
             "setrank": false
         }
     },
+    "webhook": {
+        "enabled": false,
+        "url": "",
+        "auth": "",
+        "events": {
+            "guildJoin": true,
+            "guildLeave": true,
+            "guildKick": true,
+            "guildPromote": true,
+            "guildDemote": true,
+            "guildMute": true,
+            "guildUnmute": true
+        }
+    },
     "guildRequirement": {
         "enabled": false,
         "autoAccept": false,
