@@ -2,6 +2,8 @@
 
 If you have any suggestions or bugs you find using this bot, make sure to submit them [here](https://github.com/Altpapier/hypixel-discord-guild-bridge/issues)
 
+## Outdated! Use https://github.com/DuckySoLucky/hypixel-discord-chat-bridge instead
+
 ## Table of Content
 
 -   [Features](#features)
